@@ -5,14 +5,17 @@ body {
   background-color: pink;
 }
 
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
 .nodisp{
   display: none !important;
 }
 
 
 #g1{
-  background-color: red;
-  color: white;
+  background-color: rgb(225, 225, 225);
 }
 
 #g2{
@@ -22,4 +25,13 @@ body {
 #g3{
   background-color: green;
   color: white;
+}
+
+#main, #perfil, .game{
+  padding: 0;
+  padding-top: env(safe-area-insert-top);
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-left: 2%;
 }

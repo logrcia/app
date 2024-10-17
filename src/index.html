@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style-tateti.css">
 </head>
 <body>
   <div id="main">
@@ -27,13 +28,33 @@
   </div>
   <div id="g1" class="game nodisp">
     <button id="btn-g1-back">Volver</button>
-    <h2>Game 1</h2>
-    <p>El juego 1 acá...</p>
+    <h1 id="h1-tateti">Ta-Te-Ti</h1>
+
+    <p id="turno">Turno de: <span id="jugador">x</span></p>
+    
+    <div id="tablero">
+        <div class="celda"></div>
+        <div class="celda"></div>
+        <div class="celda"></div>
+        <div class="celda"></div>
+        <div class="celda"></div>
+        <div class="celda"></div>
+        <div class="celda"></div>
+        <div class="celda"></div>
+        <div class="celda"></div>
+    </div>
+
+
+    <h2 class="ganador"></h2>
+
+    <button id="reset" disabled>Reiniciar</button>
+
+    <script src="./js/js.js" type="module"></script>
   </div>
   <div id="g2" class="game nodisp">
     <button id="btn-g2-back">Volver</button>
-    <h2>Game 2</h2>
-    <p>El juego 2 acá...</p>
+    <h2>Generala</h2>
+    <button></button>
   </div>
   <div id="g3" class="game nodisp">
     <button id="btn-g3-back">Volver</button>
