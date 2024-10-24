@@ -32,6 +32,10 @@ body {
   margin: 20px;
 }
 
+.dadosSeleccionados{
+  border: 2px solid red;
+}
+
 #g3{
   background-color: green;
   color: white;
