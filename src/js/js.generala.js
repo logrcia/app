@@ -8,93 +8,155 @@ function rollDice() {
 }*/
 
 const DICE_SIZE = 100;
+const DOT_RADIUS = 0.1 * DICE_SIZE;
+const AT_QUARTER = 0.25 * DICE_SIZE;
+const AT_HALF = 0.5 * DICE_SIZE;
+const AT_3QUARTER = 0.75 * DICE_SIZE;
 
+//jugadas (expresiones regulares)
 const reEscalera = /12345|23456|13456/;
 const reGenerala = /1{5}|2{5}|3{5}|4{5}|5{5}|6{5}/;
 const rePoker = /1{4}[23456]|12{4}|2{4}[3456]|[12]3{4}|3{4}[456]|[123]4{4}|4{4}[56]|[1234]5{4}|5{4}6|[12345]6{4}/;
 const reFull = /1{3}(2{2}|3{2}|4{2}|5{2}|6{2})|1{2}(2{3}|3{3}|4{3}|5{3}|6{3})|2{3}(3{2}|4{2}|5{2}|6{2})|2{2}(3{3}|4{3}|5{3}|6{3})|3{3}(4{2}|5{2}|6{2})|3{2}(4{3}|5{3}|6{3})|4{3}(5{2}|6{2})|4{2}(5{3}|6{3})|5{3}6{2}|5{2}6{3}/;
 
 const game = {
-    dados: ["", "", "", "", ""],
+    dados: [0, 0, 0, 0, 0],           // Se inicializan en cero para que se vean así antes de la primer tirada
     dadosSeleccionados: [false, false, false, false, false],
     jugadores: 2,
     turno: 1,
-    moves: 1,
+    moves: 0,
     scores: [],
+    round: 1,
 }
 
 
-
+// averiguar arrow functions!!
 const initGame = () => {
-    game.dados = ["", "", "", "", ""]; 
+    game.dados = [0, 0, 0, 0, 0];     // Al iniciar, los dados están en cero
     game.dadosSeleccionados = [false, false, false, false, false];
     game.turno = 1; //habría q hacer que empiece un jugador al azar game.jugadores
-    game.moves = 1;
+    game.moves = 0;
+    
+    for(let i = 0; i < game.jugadores; i++){
+        game.scores.push([" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0]); //el 0 es el total
+    }
 
+/*
+    for (let p = 0; p < game.jugadores; p++){
+        game.scores[p] = Array(12).fill(" ");
+        game.scores[p][11] = 0;
+    };
+*/
     document.querySelectorAll(".dados-container .dados").forEach((diceElement, i) => {
         diceElement.addEventListener("click", () => toggleDiceSelection(i));
     });
 
     drawDices();
+    drawState(); //actualiza el estado inicial de la interfaz
+    drawScores();
+};
+/*
+const drawScores = () => {
+    const contHeader = document.querySelector("#g2 .scores table thead tr");
+    contHeader.innerHTML = null;
+}*/
+
+const drawDot = (ctx, x, y) => {
+    ctx.beginPath();
+    ctx.arc(x, y, DOT_RADIUS, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "#000000";
+    ctx.fill();
+    ctx.closePath();
 };
 
 const drawScores = () => {
-    //encabezado Falta algo para q aparezca q no llegue a copiar
+    console.log(game.jugadores, game.scores);
+    // Header
     const contHeader = document.querySelector("#g2 .scores table thead tr");
-    contHeader.innerHTML = null;
+    contHeader.innerHTML = "";
     const cellGame = document.createElement("th");
-    cellGame.innerHTML = "Juego";
+    cellGame.innerHTML = "juego";
     contHeader.appendChild(cellGame);
-    for(let i = 0; i < game.jugadores.length; i++){
+
+    for (let i = 0; i < game.jugadores; i++) {
         const cellPlayerName = document.createElement("th");
         cellPlayerName.innerHTML = `J${i + 1}`;
         contHeader.appendChild(cellPlayerName);
     }
-    //juegos
+
+    // juegos
     const contGames = document.querySelector("#g2 .scores table tbody");
-    for (let i = 0; i < 11; i++){
-        const contGame = document.createElement("th");
-        const cellGameName = document.createElement("td");
-        cellGameName.innerHTML = getGameName(i);
-        contGames.appendChild(cellGameName);
-        for (let p = 0; p < game.jugadores.length; p++){
+    contGames.innerHTML = ""; // contenido vacío
+
+    //agrega fila por cada juego
+    for (let j = 0; j < 11; j++) {
+        const contGame = document.createElement("tr");
+        const cellGameName = document.createElement("th");
+        cellGameName.innerHTML = getGameName(j);
+        contGame.appendChild(cellGameName);
+
+        for (let p = 0; p < game.jugadores; p++) {
             const cellPlayerScore = document.createElement("td");
-            cellPlayerScore.innerHTML = game.scores[p][i];
-            contGames.appendChild(cellPlayerScore);
+            cellPlayerScore.innerHTML = game.scores[p][j];          //que se creen celdas de cant de juegos por la cant de los jugadores
+            contGame.appendChild(cellPlayerScore);
         }
+        contGames.appendChild(contGame);
+        contGame.addEventListener("click", () => {
+            if(game.dados.some(dado => dado === 0)){ //esto es para determinar que tiré una vez al menos. si al menos algún dado esta en 0 que no se ejecute la función (anotar puntaje)
+                return; // termina la función, que no se ejecute lo que sigue 
+            }
+            console.info(`attempt to score on game ${getGameName(j)}`);
+            if (game.scores[game.turno - 1][j] !== " "){
+                alert(`ya se anotó el juego ${getGameName(j)}!!!`);
+                return;
+            }else{
+                const score = calculateScore(j);
+                game.scores[game.turno - 1][j] = score === 0 ? "X" : score; //puntaje de cada juego
+                game.scores[game.turno - 1][11] += score; //puntaje total de cada jugador
+                drawScores();
+                changePlayerTurn();
+            }
+        });
     }
-    //total
+
+    // total
     const contTotal = document.createElement("tr");
     const cellTotalName = document.createElement("th");
-    cellTotalName.innerHTML = "Total";
+    cellTotalName.innerHTML = "total";
     contTotal.appendChild(cellTotalName);
-    for (let p = 0; p < game.jugadores.length; p++){
-        const cellPlayerScore = document.createElement("td");
-        cellPlayerScore.innerHTML = game.scores[p][i];
-        contGames.appendChild(cellPlayerScore);
+
+    for (let p = 0; p < game.jugadores; p++) {
+        const cellPlayerTotal = document.createElement("td");
+        cellPlayerTotal.innerHTML = game.scores[p][11];
+        contTotal.appendChild(cellPlayerTotal);
     }
+    contGames.appendChild(contTotal);
 }
 
-const isGameMatch = regaex => {
-    return game.dados.slice().sort((d1, d2) => d1 - d2).join("").match(regaex) !== null;//hago una copia del array, lo ordena, lo convierte en un string y lo matchea con la expresion regular de la generala
-}
 
-const score = whichGame => {
+const calculateScore = whichGame => {
     let score = 0;
     switch(whichGame) {
+        /*
+        //puntajes por números sin optimizar
         case 0:
         case 1:
         case 2:
         case 3:
         case 4:
         case 5:
-            //computar puntajes para los numeros
             break;
+        */
         case 6:
             if (isGameMatch(reEscalera)) {
-               /* score = 20;
-            }else if(isGameMatch(reEscalera) || moves === 1){
-                score = 25;
+               /* 
+               if (isGameMatch(reEscalera)) {
+                    if (game.moves === 1) {
+                        score = 25;
+                    } else {
+                        score = 20;
+                    }
+                }
                 */
                 score = game.moves === 1 ? 25 : 20;
             }
@@ -121,33 +183,54 @@ const score = whichGame => {
                 score = game.moves === 1 ? 105 : 100;
             }
             break;
+        //puntaje por números optimizado. primero se fija si es generala, etc y si no es va a default
         default: 
-        score = game.dados.filter(dado => dado === whichGame +1).reduce((acc, cur) => acc +cur, 0);
-        //numeros 1-6
-        /*const dadosQueMeInteresan = [];
+            //score = game.dados.filter(dado => dado === whichGame +1).reduce((acc, cur) => acc +cur, 0);
+            const dadosQueMeInteresan = game.dados.filter(function (dado){
+                return dado === whichGame + 1;
+            });
+            score = dadosQueMeInteresan.reduce((acc, cur) => acc + cur, 0);
+
+        //filtro los dados que no son del número que quiero, me quedo solo cn los que quiero y esos sumo
+        //.filter es una función que cuando es true lo que devuelve se queda en el array y cuando es false no queda
+            break;
+        
+        /*
+        const dadosQueMeInteresan = [];
         for(let i = 0; i < game.dados.length; i++){
             if (game.dados[i] === whichGame + 1) {
                 dadosQueMeInteresan.push(game.dados[i]);
             }
         }
-        score = dadosQueMeInteresan.reduce((acc, cur) => acc + cur, 0);*/
+        let acc = 0;
+        for (let i = 0; i < dadosQueMeInteresan.length; i++){
+            acc += dadosQueMeInteresan[i]; //acc + cur
+        }
+        score = acc;
+        */
 
-       /* const dadosQueMeInteresan = game.dados.filter(function(dice) {
-            return dice === whichGame + 1;
-        });
-        score = dadosQueMeInteresan.reduce((acc, cur) => acc + cur, 0);*/
-        break;
     }
     return score;
+}
+
+const isGameMatch = regaex => {
+    return game.dados.slice().sort((d1, d2) => d1 - d2).join("").match(regaex) !== null;//hago una copia del array, lo ordena, lo convierte en un string y lo matchea con la expresion regular de la generala
 }
 
 const drawDices = () => {
     game.dados.forEach((dado, i) => {
         const diceElement = document.querySelector(`.dados-container .dado-${i + 1}`);
-        if (diceElement) {
-            //diceElement.innerHTML = dado;  // Muestra el valor del dado
-            showDices(diceElement, dado);
+        
+        showDice(diceElement, dado);
+
+        // Agrega o quita la clase de selección visual según el estado de cada dado
+        if (game.dadosSeleccionados[i]) {
+            diceElement.classList.add("dadosSeleccionados");
+        } else {
+            diceElement.classList.remove("dadosSeleccionados");
         }
+        
+        //diceElement.innerHTML = dado;  // Muestra el valor actual de cada dado
     });
 };
 
@@ -156,26 +239,49 @@ const drawState = () => {
     document.getElementById("movesGenerala").innerHTML = game.moves;
 }
 
+
 const rollDices = () => {
     for (let i = 0; i < game.dados.length; i++) {
-        if (game.moves === 1 || !game.dadosSeleccionados[i]) {  // Solo lanza los dados que no están seleccionados
-            game.dados[i] = Math.floor(Math.random() * 6) + 1;  // Genera un número entre 1 y 6
+        if (game.moves === 0 || game.dadosSeleccionados[i]) {
+            // Genera un valor aleatorio en la primera tirada o para los dados seleccionados
+            game.dados[i] = Math.floor(Math.random() * 6) + 1;
         }
     }
     game.dadosSeleccionados = [false, false, false, false, false];
-    drawDices();  // Después de tirar los dados, actualiza la interfaz
+    drawDices();  // Actualiza la vista de los dados con los valores de la tirada
+
+    console.log('---');
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(whichGame => console.log(`Game ${getGameName(whichGame)} score: ${calculateScore(whichGame)}`));
+
 
     game.moves++;
-    if (game.moves > 3){
-        game.turno++;
-        if(game.turno > game.jugadores) {
-            game.turno = 1;
-        }
-        game.moves = 1;
-        game.dadosSeleccionados = [false, false, false, false, false];
+    if (game.moves === 3) {
+        document.getElementById("roll-btn").setAttribute("disabled", "disabled");
     }
-    drawState();
+    if (game.moves > 3) {             // Si el jugador ya hizo tres tiradas
+        game.turno++;                 // Cambia al siguiente jugador
+        if (game.turno > game.jugadores) {
+            game.turno = 1;           // Si pasa el último jugador, vuelve al primero
+        }
+        game.moves = 0;
+        game.dados = [0, 0, 0, 0, 0]; // Al cambiar de turno, los dados se resetean a ceros (NUEVO)
+        drawDices();                  // Muestra los ceros en pantalla para el nuevo jugador (NUEVO)
+    }
+    drawState();                      // Actualiza el estado del juego (jugador actual y tiradas)
 };
+
+const changePlayerTurn = () => {
+    document.getElementById("roll-btn").removeAttribute("disabled");
+    game.turno++;
+    if (game.turno > game.jugadores) {
+        game.turno = 1;           // Si pasa el último jugador, vuelve al primero
+        game.round++;
+        if(game.round === 11){
+            gameOver();
+        }
+    }
+    game.moves = 0;
+}
 
 const getGameName = whichGame => {
     const games = ['1', '2', '3', '4', '5', '6', 'E', 'F', 'P', 'G', 'D'];
@@ -183,8 +289,8 @@ const getGameName = whichGame => {
 }
 
 const toggleDiceSelection = diceNumber => {
-    game.dadosSeleccionados[diceNumber] = !game.dadosSeleccionados[diceNumber];
-    const diceElement = document.querySelector(`.dados-container .dado-${diceNumber + 1}`);
+    game.dadosSeleccionados[diceNumber] = !game.dadosSeleccionados[diceNumber]; //hace que lo que era true sea false y al reves
+    const diceElement = document.querySelector(`.dados-container .dado-${diceNumber + 1}`);//lo visual!!
     if (game.dadosSeleccionados[diceNumber]) {
         diceElement.classList.add("dadosSeleccionados");
     } else {
@@ -192,31 +298,77 @@ const toggleDiceSelection = diceNumber => {
     }
 };
 
-const cambiarSeleccion = (index) => {
-    if (game.moves > 1 && game.moves <= 3) {
-        game.dadosSeleccionados[index] = !juego.dadosSeleccionados[index];
-        drawDices();
+const gameOver = () => {
+    document.getElementById("roll-btn").setAttribute("disabled", "disabled");
+    let winner = 0;
+    let winningScore = 0;
+    for(let i = 0; i < game.jugadores; i++){
+        if(game.scores[i][11] > winningScore){
+            winningScore = game.scores[i][11];
+            winner = i;
+        }
+    }
+    alert(`J${winner + 1} won with ${winningScore} points`);
+}
+
+const drawDice = (cont, number) => {
+    let ctx = cont.getContext("2d");
+
+    // Limpia el canvas
+    ctx.clearRect(0, 0, DICE_SIZE, DICE_SIZE);
+
+    // Dibuja el cuadrado del dado
+    ctx.beginPath();
+    ctx.rect(0, 0, DICE_SIZE, DICE_SIZE);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.closePath();
+
+    // Dibuja los puntos en función del número
+    switch (number) {
+        case 1:
+            drawDot(ctx, AT_HALF, AT_HALF);
+            break;
+        case 2:
+            drawDot(ctx, AT_3QUARTER, AT_QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_3QUARTER);
+            break;
+        case 3:
+            drawDot(ctx, AT_HALF, AT_HALF);
+            drawDot(ctx, AT_3QUARTER, AT_QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_3QUARTER);
+            break;
+        case 4:
+            drawDot(ctx, AT_3QUARTER, AT_QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_3QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_QUARTER);
+            drawDot(ctx, AT_3QUARTER, AT_3QUARTER);
+            break;
+        case 5:
+            drawDot(ctx, AT_HALF, AT_HALF);
+            drawDot(ctx, AT_3QUARTER, AT_QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_3QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_QUARTER);
+            drawDot(ctx, AT_3QUARTER, AT_3QUARTER);
+            break;
+        case 6:
+            drawDot(ctx, AT_3QUARTER, AT_QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_3QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_QUARTER);
+            drawDot(ctx, AT_3QUARTER, AT_3QUARTER);
+            drawDot(ctx, AT_QUARTER, AT_HALF);
+            drawDot(ctx, AT_3QUARTER, AT_HALF);
+            break;
     }
 };
 
-const showDices = (contDiv, number) => {
-    const sourceImg = document.getElementById(`d${number - 1}`);
-    
-    // Verificar si sourceImg existe antes de continuar
-    if (!sourceImg) {
-        console.error(`No se encontró la imagen con ID d${number - 1}`);
-        return;
-    }
-
-    contDiv.innerHTML = '';  // Limpia el contenedor antes de añadir la imagen
-
-    const img = document.createElement("img");
-    img.setAttribute("width", DICE_SIZE);
-    img.setAttribute("height", DICE_SIZE);
-    img.setAttribute("alt", `dice ${number}`);
-    img.setAttribute("src", sourceImg.src);  // Usa sourceImg.src para obtener la ruta de la imagen
-
-    contDiv.appendChild(img);  // Añade la imagen al contenedor
+const showDice = (contDiv, number) => {
+    contDiv.innerHTML = null;
+    let canvas = document.createElement("canvas");
+    canvas.setAttribute("width", DICE_SIZE);
+    canvas.setAttribute("height", DICE_SIZE);
+    drawDice(canvas, number);
+    contDiv.appendChild(canvas);
 };
 
 document.getElementById("roll-btn").addEventListener("click", rollDices);

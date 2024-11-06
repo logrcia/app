@@ -32,6 +32,22 @@ body {
   border: 2px solid red;
 }
 
+#g2 .scores table{
+  background-color: #8a2be2;
+  border-collapse: collapse;
+}
+
+#g2 .scores th, #g2 .scores td{
+  padding: 5px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+#g2 .scores table tbody tr:last-of-type td {
+  font-weight: bold;
+  cursor: default;
+}
+
 #g3{
   background-color: green;
   color: white;
