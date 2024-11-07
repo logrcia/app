@@ -22,10 +22,34 @@ body {
   background-color: rgb(231, 231, 154);
 }
 
+#g2 .game-cont h1{
+  color: #8a2be2;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+#btn-g2-back{
+  padding: 10px;
+}
+
+#roll-btn{
+  background-color: #8a2be2;
+  padding: 10px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+}
+
 .dados{
   display: inline-block;
   padding: 10px;
-  margin: 20px;
+  margin: 0 20px;
+}
+
+.dados-container, #controles{
+  display: flex;
+  justify-content: center;
 }
 
 .dadosSeleccionados{
@@ -33,8 +57,11 @@ body {
 }
 
 #g2 .scores table{
-  background-color: #8a2be2;
+  background-color: white;
   border-collapse: collapse;
+  width: 20%;
+  font-size: 12px;
+  margin-top: 20px;
 }
 
 #g2 .scores th, #g2 .scores td{
