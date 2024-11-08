@@ -55,11 +55,6 @@ const initGame = () => {
     drawState(); //actualiza el estado inicial de la interfaz
     drawScores();
 };
-/*
-const drawScores = () => {
-    const contHeader = document.querySelector("#g2 .scores table thead tr");
-    contHeader.innerHTML = null;
-}*/
 
 const drawDot = (ctx, x, y) => {
     ctx.beginPath();
@@ -70,8 +65,8 @@ const drawDot = (ctx, x, y) => {
 };
 
 const drawScores = () => {
-    console.log(game.jugadores, game.scores);
-    // Header
+    //console.log(game.jugadores, game.scores);
+    // header
     const contHeader = document.querySelector("#g2 .scores table thead tr");
     contHeader.innerHTML = "";
     const cellGame = document.createElement("th");
@@ -113,8 +108,8 @@ const drawScores = () => {
                 const score = calculateScore(j);
                 game.scores[game.turno - 1][j] = score === 0 ? "X" : score; //puntaje de cada juego
                 game.scores[game.turno - 1][11] += score; //puntaje total de cada jugador
-                drawScores();
                 changePlayerTurn();
+                drawScores();
             }
         });
     }
@@ -271,16 +266,20 @@ const rollDices = () => {
 };
 
 const changePlayerTurn = () => {
-    document.getElementById("roll-btn").removeAttribute("disabled");
+    game.dados = [0, 0, 0, 0, 0];
+    game.dadosSeleccionados = [false, false, false, false, false];
+    game.moves = 0;
     game.turno++;
     if (game.turno > game.jugadores) {
         game.turno = 1;           // Si pasa el último jugador, vuelve al primero
         game.round++;
-        if(game.round === 11){
+        if(game.round === 12){
             gameOver();
         }
     }
-    game.moves = 0;
+    document.getElementById("roll-btn").removeAttribute("disabled");
+    drawDices();
+    drawState();
 }
 
 const getGameName = whichGame => {

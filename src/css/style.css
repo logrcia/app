@@ -80,7 +80,7 @@ body {
   color: white;
 }
 
-#main, #perfil, .game{
+#main, .game{
   padding: 0;
   padding-top: env(safe-area-insert-top);
   margin: 0;
