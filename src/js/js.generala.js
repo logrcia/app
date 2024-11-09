@@ -1,17 +1,31 @@
-/*document.getElementById('roll-btn').addEventListener('click', rollDice);
-
-function rollDice() {
-  for (let i = 1; i <= 5; i++) {
-    const diceValue = Math.floor(Math.random() * 6) + 1;
-    document.getElementById(`dado-${i}`).textContent = diceValue;
-  }
-}*/
 
 const DICE_SIZE = 50;
 const DOT_RADIUS = 0.1 * DICE_SIZE;
 const AT_QUARTER = 0.25 * DICE_SIZE;
 const AT_HALF = 0.5 * DICE_SIZE;
 const AT_3QUARTER = 0.75 * DICE_SIZE;
+
+let currentGame;
+let modalAction; // To keep track of what action the modal is handling
+const modalContent = document.getElementById("modal-content");
+const modalMessage = document.getElementById("modal-message");
+const acceptButton = document.getElementById("accept-btn");
+const cancelButton = document.getElementById("cancel-btn");
+
+// muestra el modal
+const showModal = (message, isConfirmation = false) => {
+    modalContent.style.display = "flex";
+    modalMessage.innerHTML = message;
+    acceptButton.style.display = "block";
+    acceptButton.innerHTML = isConfirmation ? "Tachar" : "Cerrar";
+    cancelButton.style.display = isConfirmation ? "block" : "none";
+};
+
+// oculta el modal
+const hideModal = () => {
+    modalContent.style.display = "none";
+};
+
 
 //jugadas (expresiones regulares)
 const reEscalera = /12345|23456|13456/;
@@ -20,7 +34,7 @@ const rePoker = /1{4}[23456]|12{4}|2{4}[3456]|[12]3{4}|3{4}[456]|[123]4{4}|4{4}[
 const reFull = /1{3}(2{2}|3{2}|4{2}|5{2}|6{2})|1{2}(2{3}|3{3}|4{3}|5{3}|6{3})|2{3}(3{2}|4{2}|5{2}|6{2})|2{2}(3{3}|4{3}|5{3}|6{3})|3{3}(4{2}|5{2}|6{2})|3{2}(4{3}|5{3}|6{3})|4{3}(5{2}|6{2})|4{2}(5{3}|6{3})|5{3}6{2}|5{2}6{3}/;
 
 const game = {
-    dados: [0, 0, 0, 0, 0],           // Se inicializan en cero para que se vean así antes de la primer tirada
+    dados: [0, 0, 0, 0, 0],           // se inicializan en cero para que se vean así antes de la primer tirada
     dadosSeleccionados: [false, false, false, false, false],
     jugadores: 2,
     turno: 1,
@@ -92,7 +106,11 @@ const drawScores = () => {
 
         for (let p = 0; p < game.jugadores; p++) {
             const cellPlayerScore = document.createElement("td");
-            cellPlayerScore.innerHTML = game.scores[p][j];          //que se creen celdas de cant de juegos por la cant de los jugadores
+            cellPlayerScore.innerHTML = game.scores[p][j];     //que se creen celdas de cant de juegos por la cant de los jugadores
+             // Aplica un color de fondo si es el turno actual
+             if (p === game.turno - 1) {
+                cellPlayerScore.style.backgroundColor = "#ffc0cb"; // color de fondo para el jugador en turno
+            }
             contGame.appendChild(cellPlayerScore);
         }
         contGames.appendChild(contGame);
@@ -102,9 +120,19 @@ const drawScores = () => {
             }
             console.info(`attempt to score on game ${getGameName(j)}`);
             if (game.scores[game.turno - 1][j] !== " "){
-                alert(`ya se anotó el juego ${getGameName(j)}!!!`);
+                modalAction = "alreadyScored";
+                showModal(`Ya se anotó el juego ${getGameName(j)}!!!`, false);
                 return;
-            }else{
+            }
+             // Calcula el puntaje para ver si cumple con el juego seleccionado
+        const jugada = calculateScore(j);
+    
+        // Si no cumple el juego, pregunta si desea tacharlo
+        if (jugada === 0) {
+            currentGame = j;  // Store the current game
+            modalAction = "crossOut";
+            showModal(`No tienes el juego ${getGameName(j)}. ¿Quiere tacharlo?`, true);
+        }else{  
                 const score = calculateScore(j);
                 game.scores[game.turno - 1][j] = score === 0 ? "X" : score; //puntaje de cada juego
                 game.scores[game.turno - 1][11] += score; //puntaje total de cada jugador
@@ -123,11 +151,14 @@ const drawScores = () => {
     for (let p = 0; p < game.jugadores; p++) {
         const cellPlayerTotal = document.createElement("td");
         cellPlayerTotal.innerHTML = game.scores[p][11];
+         // Aplica un color de fondo si es el turno actual
+         if (p === game.turno - 1) {
+            cellPlayerTotal.style.backgroundColor = "#d0e0f0"; // color de fondo para el jugador en turno
+        }
         contTotal.appendChild(cellPlayerTotal);
     }
     contGames.appendChild(contTotal);
 }
-
 
 const calculateScore = whichGame => {
     let score = 0;
@@ -234,6 +265,20 @@ const drawState = () => {
     document.getElementById("movesGenerala").innerHTML = game.moves;
 }
 
+//modal
+acceptButton.addEventListener("click", () => {
+    hideModal();
+    if (modalAction === "crossOut") {
+        game.scores[game.turno - 1][currentGame] = "X";
+        changePlayerTurn();
+        drawScores();
+    }
+});
+
+cancelButton.addEventListener("click", () => {
+    hideModal();
+});
+
 
 const rollDices = () => {
     for (let i = 0; i < game.dados.length; i++) {
@@ -307,9 +352,10 @@ const gameOver = () => {
             winner = i;
         }
     }
-    alert(`J${winner + 1} won with ${winningScore} points`);
+    showModal(`J${winner + 1} ganó con ${winningScore} puntos!`, false);
 }
 
+//presentación de los dados
 const drawDice = (cont, number) => {
     let ctx = cont.getContext("2d");
 
