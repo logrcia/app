@@ -13,12 +13,14 @@ const acceptButton = document.getElementById("accept-btn");
 const cancelButton = document.getElementById("cancel-btn");
 
 // muestra el modal
-const showModal = (message, isConfirmation = false) => {
+const showModal = (message, confirmar = false) => {
     modalContent.style.display = "flex";
     modalMessage.innerHTML = message;
     acceptButton.style.display = "block";
-    acceptButton.innerHTML = isConfirmation ? "Tachar" : "Cerrar";
-    cancelButton.style.display = isConfirmation ? "block" : "none";
+    //si confirmar es true el botón dice "Tachar", sino "Cerrar"
+    acceptButton.innerHTML = confirmar ? "Tachar" : "Cerrar";
+    //si confirmar es true el botón aparece, sino se oculta
+    cancelButton.style.display = confirmar ? "block" : "none";
 };
 
 // oculta el modal
@@ -70,13 +72,7 @@ const initGame = () => {
     drawScores();
 };
 
-const drawDot = (ctx, x, y) => {
-    ctx.beginPath();
-    ctx.arc(x, y, DOT_RADIUS, 0, 2 * Math.PI, false);
-    ctx.fillStyle = "#000000";
-    ctx.fill();
-    ctx.closePath();
-};
+
 
 const drawScores = () => {
     //console.log(game.jugadores, game.scores);
@@ -121,6 +117,7 @@ const drawScores = () => {
             console.info(`attempt to score on game ${getGameName(j)}`);
             if (game.scores[game.turno - 1][j] !== " "){
                 modalAction = "alreadyScored";
+                //message es el primer parámetro
                 showModal(`Ya se anotó el juego ${getGameName(j)}!!!`, false);
                 return;
             }
@@ -130,7 +127,7 @@ const drawScores = () => {
         // Si no cumple el juego, pregunta si desea tacharlo
         if (jugada === 0) {
             currentGame = j;  // Store the current game
-            modalAction = "crossOut";
+            modalAction = "tachado";
             showModal(`No tienes el juego ${getGameName(j)}. ¿Quiere tacharlo?`, true);
         }else{  
                 const score = calculateScore(j);
@@ -268,7 +265,7 @@ const drawState = () => {
 //modal
 acceptButton.addEventListener("click", () => {
     hideModal();
-    if (modalAction === "crossOut") {
+    if (modalAction === "tachado") {
         game.scores[game.turno - 1][currentGame] = "X";
         changePlayerTurn();
         drawScores();
@@ -356,6 +353,14 @@ const gameOver = () => {
 }
 
 //presentación de los dados
+const drawDot = (ctx, x, y) => {
+    ctx.beginPath();
+    ctx.arc(x, y, DOT_RADIUS, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "#000000";
+    ctx.fill();
+    ctx.closePath();
+};
+
 const drawDice = (cont, number) => {
     let ctx = cont.getContext("2d");
 
