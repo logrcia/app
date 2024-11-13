@@ -6,6 +6,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/style-tateti.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="main">
@@ -16,27 +20,29 @@
   </div>
   
   <div id="g1" class="game nodisp">
+
     <button id="btn-g1-back">Volver</button>
-    <h1 id="h1-tateti">Ta-Te-Ti</h1>
+    <div id="cont-tateti">
+      <h1 id="h1-tateti">Ta-Te-Ti</h1>
 
-    <p id="turno">Turno de: <span id="jugador">x</span></p>
-    
-    <div id="tablero">
-        <div class="celda"></div>
-        <div class="celda"></div>
-        <div class="celda"></div>
-        <div class="celda"></div>
-        <div class="celda"></div>
-        <div class="celda"></div>
-        <div class="celda"></div>
-        <div class="celda"></div>
-        <div class="celda"></div>
+      <p id="turno">Turno de: <span id="jugador">x</span></p>
+
+      <h2 class="ganador"></h2>
+      
+      <div id="tablero">
+          <div class="celda"></div>
+          <div class="celda"></div>
+          <div class="celda"></div>
+          <div class="celda"></div>
+          <div class="celda"></div>
+          <div class="celda"></div>
+          <div class="celda"></div>
+          <div class="celda"></div>
+          <div class="celda"></div>
+      </div>
+
+      <button id="reset" disabled>Reiniciar</button>
     </div>
-
-
-    <h2 class="ganador"></h2>
-
-    <button id="reset" disabled>Reiniciar</button>
 
     <script src="./js/js.js" type="module"></script>
   </div>
@@ -50,31 +56,35 @@
         <p id="modal-message">Título del modal</p>
         <button id="accept-btn">Si</button>
         <button id="cancel-btn">No</button>
+        <button id="restart-btn" style="display: none;">Reiniciar Juego</button>
       </div>
     </div>
 
     <p id="turno">Turno de: <span id="jugadorGenerala">1</span>, tiros: <span id="movesGenerala"></span></p>
     
-    <div class="dados-container">
-      <div class="dados dado-1"></div>
-      <div class="dados dado-2"></div>
-      <div class="dados dado-3"></div>
-      <div class="dados dado-4"></div>
-      <div class="dados dado-5"></div>
-    </div>
+    <div id="cont-dados-tabla">
+      <div id="cont-dados-btn">
+        <div class="dados-container">
+          <div class="dados dado-1"></div>
+          <div class="dados dado-2"></div>
+          <div class="dados dado-3"></div>
+          <div class="dados dado-4"></div>
+          <div class="dados dado-5"></div>
+        </div>
 
-    <div id="controles">
-      <button id="roll-btn">Tirar</button>
-    </div>
+        <div id="controles">
+          <button id="roll-btn">Tirar</button>
+        </div>
+      </div>
     
-    <div class="scores">
-      <table>
-        <thead><tr></tr></thead>
-        <tbody></tbody>
-      </table>
+      <div class="scores">
+        <table>
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
-
-    </div>
+  </div>
   
     <script src="./js/js.generala.js" type="module"></script>
 </div>

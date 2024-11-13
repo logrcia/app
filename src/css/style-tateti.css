@@ -1,3 +1,7 @@
+#cont-tateti{
+    margin-top: 40%;
+}
+
 #tablero {
     display: grid;
     grid-template-columns: repeat(3, 100px);
@@ -63,4 +67,31 @@ button:disabled {
 #h1-tateti{
     display: flex;
     justify-content: center;
+}
+
+@media (orientation: landscape) and (max-width: 1024px) {
+    #cont-tateti{
+        margin-top: 0%;
+    }
+    
+    .ganador{
+        font-size: 1em
+      }
+    
+    #tablero{
+        grid-template-columns: repeat(3, 60px);
+        grid-template-rows: repeat(3, 60px);
+      }
+
+    #g1 #turno{
+        font-size: 1em;
+        margin-top: 0px;
+      }
+    .ganador {
+        font-size: 1em;
+        display: none;
+        text-align: center;
+        margin-top: 0px;
+    }
+    
 }

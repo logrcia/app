@@ -1,32 +1,18 @@
 
-const DICE_SIZE = 50;
+const DICE_SIZE = 70;
 const DOT_RADIUS = 0.1 * DICE_SIZE;
 const AT_QUARTER = 0.25 * DICE_SIZE;
 const AT_HALF = 0.5 * DICE_SIZE;
 const AT_3QUARTER = 0.75 * DICE_SIZE;
 
-let currentGame;
-let modalAction; // To keep track of what action the modal is handling
+
+let gameToScore = null;
 const modalContent = document.getElementById("modal-content");
 const modalMessage = document.getElementById("modal-message");
 const acceptButton = document.getElementById("accept-btn");
 const cancelButton = document.getElementById("cancel-btn");
+const restartButton = document.getElementById("restart-btn");
 
-// muestra el modal
-const showModal = (message, confirmar = false) => {
-    modalContent.style.display = "flex";
-    modalMessage.innerHTML = message;
-    acceptButton.style.display = "block";
-    //si confirmar es true el botón dice "Tachar", sino "Cerrar"
-    acceptButton.innerHTML = confirmar ? "Tachar" : "Cerrar";
-    //si confirmar es true el botón aparece, sino se oculta
-    cancelButton.style.display = confirmar ? "block" : "none";
-};
-
-// oculta el modal
-const hideModal = () => {
-    modalContent.style.display = "none";
-};
 
 
 //jugadas (expresiones regulares)
@@ -45,13 +31,13 @@ const game = {
     round: 1,
 }
 
-
 // averiguar arrow functions!!
 const initGame = () => {
     game.dados = [0, 0, 0, 0, 0];     // Al iniciar, los dados están en cero
     game.dadosSeleccionados = [false, false, false, false, false];
     game.turno = 1; //habría q hacer que empiece un jugador al azar game.jugadores
     game.moves = 0;
+    game.scores = [];
     
     for(let i = 0; i < game.jugadores; i++){
         game.scores.push([" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0]); //el 0 es el total
@@ -70,6 +56,33 @@ const initGame = () => {
     drawDices();
     drawState(); //actualiza el estado inicial de la interfaz
     drawScores();
+};
+
+// muestra el modal
+const showModal = (message, confirmar = false, reiniciar = false) => {
+    modalContent.style.display = "flex";
+    modalMessage.innerHTML = message;
+    //si confirmar es true el botón dice "Tachar", sino "Cerrar"
+    acceptButton.innerHTML = confirmar ? "Tachar" : "Cerrar";
+    //si reiniciar es true que no se muestre el botón
+    acceptButton.style.display = reiniciar ? "none" : "block";
+    //si confirmar es true el botón aparece, sino se oculta
+    cancelButton.style.display = confirmar ? "block" : "none";
+    //muestra el boton solo cuando reiniciar es true
+    restartButton.style.display = reiniciar ? "block" : "none";
+    if (reiniciar) {
+        restartButton.onclick = () => {
+            initGame(); // Llama a la función que reinicia el juego
+            hideModal();
+        };
+    }else{
+        restartButton.onclick = null;
+    }
+};
+
+// oculta el modal
+const hideModal = () => {
+    modalContent.style.display = "none";
 };
 
 
@@ -105,7 +118,7 @@ const drawScores = () => {
             cellPlayerScore.innerHTML = game.scores[p][j];     //que se creen celdas de cant de juegos por la cant de los jugadores
              // Aplica un color de fondo si es el turno actual
              if (p === game.turno - 1) {
-                cellPlayerScore.style.backgroundColor = "#ffc0cb"; // color de fondo para el jugador en turno
+                cellPlayerScore.style.backgroundColor = "#A9D9B4"; // color de fondo para el jugador en turno
             }
             contGame.appendChild(cellPlayerScore);
         }
@@ -116,29 +129,31 @@ const drawScores = () => {
             }
             console.info(`attempt to score on game ${getGameName(j)}`);
             if (game.scores[game.turno - 1][j] !== " "){
-                modalAction = "alreadyScored";
-                //message es el primer parámetro
                 showModal(`Ya se anotó el juego ${getGameName(j)}!!!`, false);
                 return;
             }
-             // Calcula el puntaje para ver si cumple con el juego seleccionado
-        const jugada = calculateScore(j);
-    
-        // Si no cumple el juego, pregunta si desea tacharlo
-        if (jugada === 0) {
-            currentGame = j;  // Store the current game
-            modalAction = "tachado";
-            showModal(`No tienes el juego ${getGameName(j)}. ¿Quiere tacharlo?`, true);
-        }else{  
-                const score = calculateScore(j);
-                game.scores[game.turno - 1][j] = score === 0 ? "X" : score; //puntaje de cada juego
-                game.scores[game.turno - 1][11] += score; //puntaje total de cada jugador
-                changePlayerTurn();
-                drawScores();
-            }
+            const jugada = calculateScore(j);
+
+            if (jugada === 0) {
+                gameToScore = j;
+                
+                showModal(`No tienes el juego ${getGameName(j)}. ¿Quiere tacharlo?`, true, false);
+                if (getGameName(j) === 'G' && game.scores[game.turno - 1][10] !== "X") { 
+                    showModal("No se puede tachar la Generala sin tachar la Doble Generala", false, false);
+                } 
+            }else {
+                if (getGameName(j) === 'D' && game.scores[game.turno - 1][9] === " ") {
+                    showModal("No se puede anotar la Doble Generala sin haber anotado la Generala primero", false, false);
+                } else{
+                    game.scores[game.turno - 1][j] = jugada;
+                    game.scores[game.turno - 1][11] += jugada;
+                    changePlayerTurn();
+                    drawScores();
+                }
+                    
+            } 
         });
     }
-
     // total
     const contTotal = document.createElement("tr");
     const cellTotalName = document.createElement("th");
@@ -150,7 +165,7 @@ const drawScores = () => {
         cellPlayerTotal.innerHTML = game.scores[p][11];
          // Aplica un color de fondo si es el turno actual
          if (p === game.turno - 1) {
-            cellPlayerTotal.style.backgroundColor = "#d0e0f0"; // color de fondo para el jugador en turno
+            cellPlayerTotal.style.backgroundColor = "#EDD6C6"; // color de fondo para el jugador en turno
         }
         contTotal.appendChild(cellPlayerTotal);
     }
@@ -265,15 +280,17 @@ const drawState = () => {
 //modal
 acceptButton.addEventListener("click", () => {
     hideModal();
-    if (modalAction === "tachado") {
-        game.scores[game.turno - 1][currentGame] = "X";
+    if (gameToScore !== null && acceptButton.innerHTML === "Tachar") {
+        game.scores[game.turno - 1][gameToScore] = "X";
         changePlayerTurn();
         drawScores();
+        gameToScore = null; // Reset after using
     }
 });
 
 cancelButton.addEventListener("click", () => {
     hideModal();
+    gameToScore = null;
 });
 
 
@@ -282,16 +299,21 @@ const rollDices = () => {
         if (game.moves === 0 || game.dadosSeleccionados[i]) {
             // Genera un valor aleatorio en la primera tirada o para los dados seleccionados
             game.dados[i] = Math.floor(Math.random() * 6) + 1;
+            console.log(`Dado ${i + 1}: ${game.dados[i]}`); // Muestra el valor de cada dado después de lanzarlo
         }
     }
     game.dadosSeleccionados = [false, false, false, false, false];
     drawDices();  // Actualiza la vista de los dados con los valores de la tirada
 
     console.log('---');
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(whichGame => console.log(`Game ${getGameName(whichGame)} score: ${calculateScore(whichGame)}`));
+    //[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(whichGame => console.log(`Game ${getGameName(whichGame)} score: ${calculateScore(whichGame)}`));
+    console.log(`Tirada ${game.moves + 1}:`, game.dados); // Muestra el estado completo de los dados después de cada tirada
 
 
     game.moves++;
+    if (game.moves === 1) {
+        document.getElementById("btn-g2-back").setAttribute("disabled", "disabled");
+    }
     if (game.moves === 3) {
         document.getElementById("roll-btn").setAttribute("disabled", "disabled");
     }
@@ -349,7 +371,8 @@ const gameOver = () => {
             winner = i;
         }
     }
-    showModal(`J${winner + 1} ganó con ${winningScore} puntos!`, false);
+    //showModal(`J${winner + 1} ganó con ${winningScore} puntos!`, false);
+    showModal(`J${winner + 1} ganó con ${winningScore} puntos!`, false, true);
 }
 
 //presentación de los dados

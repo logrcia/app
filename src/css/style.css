@@ -7,7 +7,34 @@ body {
 }
 
 *{
-  font-family: 'Poppins', sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+
+#main{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#main h2, #g1 h1, #g2 h1, #g3 h2{
+  display: flex;
+  justify-content: center;
+  font-size: 28px;
+  text-transform: uppercase;
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#main button{
+  min-width: 60%;
+  margin: 25px auto;
+  font-size: 24px;
+  background-color: #cee295;
+  text-transform: uppercase;
+  border-radius: 20px;
+  font-weight: bold;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 1);
 }
 
 .nodisp{
@@ -16,26 +43,39 @@ body {
 
 
 #g1{
-  background-color: rgb(225, 225, 225);
+  background-color: #FFB5B6;
 }
 
+
 #g2{
-  background-color: rgb(231, 231, 154);
+  background-color: #62B273;
+}
+
+button{
+  font-size: 16px;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 1);
+  text-transform: uppercase;
+  border-radius: 20px;
+  border: 2px solid black;
 }
 
 #g2 .game-cont h1{
-  color: #8a2be2;
   display: flex;
   justify-content: center;
   margin: 10px;
 }
 
-#btn-g2-back{
+#btn-g1-back, #btn-g2-back{
   padding: 10px;
+  font-size: 12px;
+}
+
+#turno{
+  font-size: 1.2em;
 }
 
 #roll-btn{
-  background-color: #8a2be2;
+  background-color: #F5EBE9;
   padding: 10px;
   font-size: 16px;
   display: flex;
@@ -44,25 +84,38 @@ body {
 
 .dados{
   display: inline-block;
-  padding: 10px;
-  margin: 0 20px;
+  padding: 5px;
+  margin: 10px;
+  width: 70px;
+  height: 70px;
 }
 
 .dados-container, #controles{
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
+.dados-container{
+  width: 90%;
+  margin: 0 auto;
+}
+
 .dadosSeleccionados{
-  border: 2px solid red;
+  border: 2px solid #FFB5B6;
+}
+
+.scores{
+  display: flex;
+  justify-content: center;
 }
 
 #g2 .scores table{
   background-color: white;
   border-collapse: collapse;
-  width: 20%;
-  font-size: 12px;
+  font-size: 1.2em;
   margin-top: 20px;
+  width: 70%;
 }
 
 #g2 .scores th, #g2 .scores td{
@@ -85,13 +138,22 @@ body {
   justify-content: center;
 }
 
+.div-modal{
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+ 
+
 #modal-content{
-  background-color: rgb(155, 209, 191);
+  background-color: #FFECC1;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 1);
+  border: 3px solid black;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
   left: 50%; /* O el valor que prefieras, con una unidad */
-    transform: translateX(-50%); /* Esto centra el modal horizontalmente */
+  transform: translateX(-50%); /* Esto centra el modal horizontalmente */
 }
 
 #g3{
@@ -106,4 +168,67 @@ body {
   width: 100vw;
   height: 100vh;
   padding-left: 2%;
+}
+
+/* Ajustes para pantalla en modo horizontal en móviles */
+@media (orientation: landscape) and (max-width: 1024px) {
+  #main {
+    background-color: red;
+  }
+
+  #main h2, #g1 h1, #g2 h1, #g3 h2 {
+      font-size: 20px; /* Reduce un poco el tamaño para evitar que se corte el texto */
+  }
+
+  #main button {
+      min-width: 40%;
+      font-size: 18px;
+      margin: 15px auto;
+  }
+
+  #g2 .game-cont h1 {
+    display: flex;
+    justify-content: center;
+    font-size: 1em;
+}
+
+  #turno {
+    display: flex;
+    justify-content: center;
+    font-size: 1em;
+    margin: 0px;
+}
+
+  #cont-dados-tabla{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #cont-dados-btn{
+    margin: 0 auto;
+    width: 40%;
+  }
+
+  .scores {
+    width: 30%;
+    margin: 0 auto;
+}
+
+  .dados {
+    margin: 5px;
+  }
+
+  #modal-content {
+      width: 70%; /* Ajusta el ancho para pantallas más estrechas en horizontal */
+      height: auto;
+      padding: 15px;
+      font-size: 14px; /* Reduce el tamaño de la fuente en el modal */
+  }
+
+  #g2 .scores table {
+    width: 20%;
+    font-size: 0.5em;
+    width: 80%;
+    margin-top: 0px;
+}
 }

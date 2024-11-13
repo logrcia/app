@@ -14,6 +14,7 @@ const winConditions = [
 
 let jugador = "X";
 let gameOver = false;
+let turno = document.getElementById("turno");
 
 
 function changeTurn() {
@@ -31,19 +32,21 @@ cells.forEach(cell => { // bucle que recorre cada celda
 resetButton.addEventListener("click", resetGame); // habilita el mouse para el boton de reseteo
 
 function handleCellClick(event) { // funcion que se ejecuta al clickear la celda
-    const cell = event.target; // celda en la que se clickeo|
+    const cell = event.target; // celda en la que se clickeo
     if (gameOver || cell.textContent !== "") { // chequea si el juego termino o si la celda se ocupo
         return; // si se cumple la condicion, termina
     }
     cell.textContent = jugador; // coloca al jugador (X u O)
-    cell.classList.add('bloqueada'); // Bloquea la casilla
+    cell.classList.add('bloqueada'); // una vez q se clickea queda bloqueada
 
     if (checkWin()) { // verifica si el movimiento es una victoria
-        gameOver = true; // si hay victoria, da como terminado el juego
+        gameOver = true; // termina el juego
+        turno.style.display = "none";
         mostrarMensaje(`¡${jugador} es el ganador!`); // mostramos el mensaje con el ganador
         resetButton.disabled = false; // habilita el boton de reseteo
     } else if (checkTie()) { // si no hay victoria, verifica si hay empate
         gameOver = true; // si hay empate termina el juego
+        turno.style.display = "none";
         mostrarMensaje("¡Empate!"); 
         resetButton.disabled = false; // reseteo
     } else { // si no hay victoria ni empate, el juego sigue
@@ -76,27 +79,28 @@ function marcarCeldasGanadoras(condition) {
 // verifica si el juego termino en un empate
 function checkTie() { 
     return Array.from(cells).every(cell => { // convierte el objeto cells en un array y aplica el metodo every() al array
-        return cell.textContent !== ""; // accede a la propiedad textContent del elemento cell.textContent
+        return cell.textContent !== ""; //verifica q no haya celda vacía CREOOO!!!!
     });
 }
 
-// muestra un mensaje en la pantalla del juego indicando el ganador
-function mostrarMensaje(mensaje) { // declara una funcion llamada mostrarMensaje que toma un parametro mensaje.
-    statusDisplay.textContent = mensaje; // asigna el valor del parametro mensaje a la propiedad textContent del elemento statusDisplay
-    statusDisplay.style.display = 'block'; // establece la propiedad display del estilo del elemento statusDisplay en 'block'
+// muestra un mensaje indicando el ganador
+function mostrarMensaje(mensaje) { 
+    statusDisplay.textContent = mensaje; // asigna el valor del parametro
+    statusDisplay.style.display = 'block'; // que aparezca con ese valor
 }
 
-// reinicia el juego a su estado inicial
-function resetGame() { // declara una funcion llamada resetGame que no toma parametros
+// reinicia el juego
+function resetGame() { 
     cells.forEach(cell => { // itera sobre cada elemento del array cells y ejecuta la funcion de flecha para cada elemento.
         cell.textContent = ""; // borra cualquier texto contenido en la celda actual
         cell.style.backgroundColor = ""; // restaura el color de fondo al original
         cell.classList.remove('bloqueada'); // elimina la clase 'bloqueada' para desbloquear las celdas
     });
-    statusDisplay.style.display = 'none'; // hace que el elemento HTML con el id statusDisplay no sea visible en la pantalla escondiendo su contenido.
-    jugador = tirarMoneda(); // devuelve un valor aleatorio que determina quien es el proximo jugador
-    gameOver = false; // establece la variable gameOver en false que indica que el juego no termino
-    resetButton.disabled = true; // hace que el boton este deshabilitado y no se pueda clickear
+    turno.style.display = 'flex';
+    statusDisplay.style.display = 'none';
+    jugador = tirarMoneda(); // valor aleatorio para ver quien es el proximo jugador
+    gameOver = false; // el juego no termino
+    resetButton.disabled = true; // boton deshabilitado
 }
 
 // inicializa el juego
