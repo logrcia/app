@@ -23,9 +23,7 @@
     box-sizing: border-box; 
 }
 
-.celda.ganador {
-    background-color: yellow;
-}
+
 
 button {
     padding: 10px 20px;
@@ -40,15 +38,12 @@ button:disabled {
 
 .ganador {
     font-size: 1.5em;
-    color: blue;
+    color: #E7919D;
     display: none;
     text-align: center;
     margin-top: 20px;
 }
 
-.ganador.empate {
-    color: gray;
-}
 
 .celda.bloqueada {
     cursor: not-allowed;
@@ -57,6 +52,7 @@ button:disabled {
 #reset{
     display: flex;
     margin: auto;
+    background-color: #FFECC1;
 }
 
 #turno{
@@ -73,6 +69,16 @@ button:disabled {
     #cont-tateti{
         margin-top: 0%;
     }
+
+    #g1 #cont-tateti h1{
+        font-size: 1em;
+        margin-top: 0px;
+    }
+
+    #btn-g1-back{
+        font-size: 0.6em;
+        margin-top: 10px;
+      }
     
     .ganador{
         font-size: 1em
@@ -81,6 +87,11 @@ button:disabled {
     #tablero{
         grid-template-columns: repeat(3, 60px);
         grid-template-rows: repeat(3, 60px);
+        margin: 8px auto;
+      }
+
+      #reset{
+        font-size: 1em;
       }
 
     #g1 #turno{

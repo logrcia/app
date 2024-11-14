@@ -1,4 +1,4 @@
-const statusDisplay = document.querySelector(".ganador");
+const statusDisplay = document.querySelector(".ganador"); //<p> del ganador
 const cells = document.querySelectorAll(".celda");
 const resetButton = document.getElementById("reset");
 const winConditions = [
@@ -25,45 +25,46 @@ function tirarMoneda() {
     return Math.random() > 0.5 ? 'X' : 'O' 
 }
 
-cells.forEach(cell => { // bucle que recorre cada celda
-    cell.addEventListener("click", handleCellClick); // habilita el mouse para poder jugar
+cells.forEach(cell => { // bucle que recorre cada celda y les asigna el evento
+    cell.addEventListener("click", handleCellClick); 
 });
 
-resetButton.addEventListener("click", resetGame); // habilita el mouse para el boton de reseteo
+resetButton.addEventListener("click", resetGame); 
 
 function handleCellClick(event) { // funcion que se ejecuta al clickear la celda
-    const cell = event.target; // celda en la que se clickeo
+    const cell = event.target; // representa el elemento específico que se clickeo
     if (gameOver || cell.textContent !== "") { // chequea si el juego termino o si la celda se ocupo
         return; // si se cumple la condicion, termina
     }
-    cell.textContent = jugador; // coloca al jugador (X u O)
+    cell.textContent = jugador; 
     cell.classList.add('bloqueada'); // una vez q se clickea queda bloqueada
+    document.getElementById("btn-g1-back").setAttribute("disabled", "disabled");
 
-    if (checkWin()) { // verifica si el movimiento es una victoria
-        gameOver = true; // termina el juego
+    if (checkWin()) { 
+        gameOver = true; 
         turno.style.display = "none";
-        mostrarMensaje(`¡${jugador} es el ganador!`); // mostramos el mensaje con el ganador
+        mostrarMensaje(`¡${jugador} es el ganador!`); 
         resetButton.disabled = false; // habilita el boton de reseteo
-    } else if (checkTie()) { // si no hay victoria, verifica si hay empate
-        gameOver = true; // si hay empate termina el juego
+    } else if (checkTie()) { 
+        gameOver = true; 
         turno.style.display = "none";
         mostrarMensaje("¡Empate!"); 
         resetButton.disabled = false; // reseteo
     } else { // si no hay victoria ni empate, el juego sigue
-        jugador = jugador === "X" ? "O" : "X"; // cambia el turno del jugador
+        jugador = jugador === "X" ? "O" : "X"; 
     }
     document.getElementById("jugador").textContent = jugador;
   }
-// verifica si un jugador gano el juego
-function checkWin() {
-  let isWin = false; // inicializa  como false para indicar si hay una condicion ganadora.
 
-  winConditions.forEach(condition => { // Recorre cada combinacion de 'winConditions' usando 'forEach'. 
-      if (cells[condition[0]].textContent === jugador && // verifica si la celda en la posicion 'condition[0]' tiene el mismo valor que 'jugador'.
-          cells[condition[1]].textContent === jugador && // verifica si la celda en la posicion 'condition[1]' tiene el mismo valor que 'jugador'.
-          cells[condition[2]].textContent === jugador) { // verifica si la celda en la posicion 'condition[2]' tiene el mismo valor que 'jugador'.
-          isWin = true; // si las tres celdas coinciden con el valor de 'jugador', establece 'isWin' en 'true' para indicar que se ha encontrado una victoria.
-          marcarCeldasGanadoras(condition); // llama a la funcion 'marcarCeldasGanadoras' y le pasa la condicion ganadora. Esta función se encargará de pintar las celdas ganadoras.
+function checkWin() {
+  let isWin = false; 
+
+  winConditions.forEach(condition => { // recorre cada combinacion de 'winConditions' usando 'forEach'. 
+      if (cells[condition[0]].textContent === jugador && 
+          cells[condition[1]].textContent === jugador && 
+          cells[condition[2]].textContent === jugador) { 
+          isWin = true; // si las tres celdas coinciden con el valor de 'jugador' gana
+          marcarCeldasGanadoras(condition); 
       }
   });
 
@@ -72,35 +73,36 @@ function checkWin() {
 
 function marcarCeldasGanadoras(condition) {
   condition.forEach(index => {
-      cells[index].style.backgroundColor = "lightblue"; // cambia el color de fondo de las celdas ganadoras
+      cells[index].style.backgroundColor = "#E7919D"; 
   });
 }
 
-// verifica si el juego termino en un empate
+
 function checkTie() { 
     return Array.from(cells).every(cell => { // convierte el objeto cells en un array y aplica el metodo every() al array
-        return cell.textContent !== ""; //verifica q no haya celda vacía CREOOO!!!!
+        return cell.textContent !== ""; //si todas las casillas tienen un símbolo y ninguna está vacía, entonces ya no hay más lugares para jugar
     });
 }
 
-// muestra un mensaje indicando el ganador
+
 function mostrarMensaje(mensaje) { 
-    statusDisplay.textContent = mensaje; // asigna el valor del parametro
-    statusDisplay.style.display = 'block'; // que aparezca con ese valor
+    statusDisplay.textContent = mensaje; 
+    statusDisplay.style.display = 'block'; 
 }
 
 // reinicia el juego
 function resetGame() { 
-    cells.forEach(cell => { // itera sobre cada elemento del array cells y ejecuta la funcion de flecha para cada elemento.
-        cell.textContent = ""; // borra cualquier texto contenido en la celda actual
+    cells.forEach(cell => { 
+        cell.textContent = ""; 
         cell.style.backgroundColor = ""; // restaura el color de fondo al original
         cell.classList.remove('bloqueada'); // elimina la clase 'bloqueada' para desbloquear las celdas
     });
     turno.style.display = 'flex';
     statusDisplay.style.display = 'none';
-    jugador = tirarMoneda(); // valor aleatorio para ver quien es el proximo jugador
-    gameOver = false; // el juego no termino
+    jugador = tirarMoneda(); 
+    gameOver = false; 
     resetButton.disabled = true; // boton deshabilitado
+    document.getElementById("btn-g1-back").removeAttribute("disabled", "disabled");
 }
 
 // inicializa el juego

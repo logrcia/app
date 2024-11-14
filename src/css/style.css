@@ -2,8 +2,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  /*background-color: pink;*/
-  background: linear-gradient(to bottom, #F1F2F5, #B0C8F1);
+  /*background: linear-gradient(to bottom, #F1F2F5, #B0C8F1);*/
+  background-color: #F5EBE9;
 }
 
 *{
@@ -30,7 +30,8 @@ body {
   min-width: 60%;
   margin: 25px auto;
   font-size: 24px;
-  background-color: #cee295;
+  background-color: #FFECC1;
+  /*background-color: #cee295;*/
   text-transform: uppercase;
   border-radius: 20px;
   font-weight: bold;
@@ -43,12 +44,12 @@ body {
 
 
 #g1{
-  background-color: #FFB5B6;
+  background-color: #FADADF;
 }
 
 
 #g2{
-  background-color: #62B273;
+  background-color: #A9D9B4; 
 }
 
 button{
@@ -72,10 +73,12 @@ button{
 
 #turno{
   font-size: 1.2em;
+  margin: 0px;
+  margin-top: 10px;
 }
 
 #roll-btn{
-  background-color: #F5EBE9;
+  background-color: #FFECC1;
   padding: 10px;
   font-size: 16px;
   display: flex;
@@ -102,7 +105,7 @@ button{
 }
 
 .dadosSeleccionados{
-  border: 2px solid #FFB5B6;
+  border: 3px solid #FFECC1;
 }
 
 .scores{
@@ -113,7 +116,7 @@ button{
 #g2 .scores table{
   background-color: white;
   border-collapse: collapse;
-  font-size: 1.2em;
+  font-size: 1.1em;
   margin-top: 20px;
   width: 70%;
 }
@@ -131,11 +134,18 @@ button{
 
 .modal {
   position: fixed;
-  width: 50%;
+  width: 60%;
   height: 40%;
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+}
+
+#modal-message{
+  font-size: 1.5em;
 }
 
 .div-modal{
@@ -146,14 +156,14 @@ button{
  
 
 #modal-content{
-  background-color: #FFECC1;
+  background-color: #FFECC1; /*#FFECC1;*/
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 1);
   border: 3px solid black;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-  left: 50%; /* O el valor que prefieras, con una unidad */
-  transform: translateX(-50%); /* Esto centra el modal horizontalmente */
+  /*left: 50%;  O el valor que prefieras, con una unidad */
+  
 }
 
 #g3{
@@ -172,12 +182,9 @@ button{
 
 /* Ajustes para pantalla en modo horizontal en móviles */
 @media (orientation: landscape) and (max-width: 1024px) {
-  #main {
-    background-color: red;
-  }
 
   #main h2, #g1 h1, #g2 h1, #g3 h2 {
-      font-size: 20px; /* Reduce un poco el tamaño para evitar que se corte el texto */
+      font-size: 20px; 
   }
 
   #main button {
@@ -186,10 +193,16 @@ button{
       margin: 15px auto;
   }
 
+  #btn-g2-back{
+    font-size: 0.6em;
+    margin-top: 10px;
+  }
+
   #g2 .game-cont h1 {
     display: flex;
     justify-content: center;
     font-size: 1em;
+    margin-top: 0px;
 }
 
   #turno {

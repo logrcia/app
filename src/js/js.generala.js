@@ -5,7 +5,7 @@ const AT_QUARTER = 0.25 * DICE_SIZE;
 const AT_HALF = 0.5 * DICE_SIZE;
 const AT_3QUARTER = 0.75 * DICE_SIZE;
 
-
+//indica el índice del juego q se quiere anotar, mas adelante le paso el valor
 let gameToScore = null;
 const modalContent = document.getElementById("modal-content");
 const modalMessage = document.getElementById("modal-message");
@@ -22,7 +22,7 @@ const rePoker = /1{4}[23456]|12{4}|2{4}[3456]|[12]3{4}|3{4}[456]|[123]4{4}|4{4}[
 const reFull = /1{3}(2{2}|3{2}|4{2}|5{2}|6{2})|1{2}(2{3}|3{3}|4{3}|5{3}|6{3})|2{3}(3{2}|4{2}|5{2}|6{2})|2{2}(3{3}|4{3}|5{3}|6{3})|3{3}(4{2}|5{2}|6{2})|3{2}(4{3}|5{3}|6{3})|4{3}(5{2}|6{2})|4{2}(5{3}|6{3})|5{3}6{2}|5{2}6{3}/;
 
 const game = {
-    dados: [0, 0, 0, 0, 0],           // se inicializan en cero para que se vean así antes de la primer tirada
+    dados: [0, 0, 0, 0, 0],  
     dadosSeleccionados: [false, false, false, false, false],
     jugadores: 2,
     turno: 1,
@@ -31,11 +31,10 @@ const game = {
     round: 1,
 }
 
-// averiguar arrow functions!!
 const initGame = () => {
-    game.dados = [0, 0, 0, 0, 0];     // Al iniciar, los dados están en cero
+    game.dados = [0, 0, 0, 0, 0];     // al iniciar los dados están en cero
     game.dadosSeleccionados = [false, false, false, false, false];
-    game.turno = 1; //habría q hacer que empiece un jugador al azar game.jugadores
+    game.turno = 1; 
     game.moves = 0;
     game.scores = [];
     
@@ -43,12 +42,6 @@ const initGame = () => {
         game.scores.push([" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", 0]); //el 0 es el total
     }
 
-/*
-    for (let p = 0; p < game.jugadores; p++){
-        game.scores[p] = Array(12).fill(" ");
-        game.scores[p][11] = 0;
-    };
-*/
     document.querySelectorAll(".dados-container .dados").forEach((diceElement, i) => {
         diceElement.addEventListener("click", () => toggleDiceSelection(i));
     });
@@ -72,11 +65,12 @@ const showModal = (message, confirmar = false, reiniciar = false) => {
     restartButton.style.display = reiniciar ? "block" : "none";
     if (reiniciar) {
         restartButton.onclick = () => {
-            initGame(); // Llama a la función que reinicia el juego
+            initGame(); 
             hideModal();
+            document.getElementById("btn-g2-back").removeAttribute("disabled", "disabled");
         };
     }else{
-        restartButton.onclick = null;
+        restartButton.onclick = null; //limpiar el evento
     }
 };
 
@@ -88,7 +82,6 @@ const hideModal = () => {
 
 
 const drawScores = () => {
-    //console.log(game.jugadores, game.scores);
     // header
     const contHeader = document.querySelector("#g2 .scores table thead tr");
     contHeader.innerHTML = "";
@@ -116,9 +109,9 @@ const drawScores = () => {
         for (let p = 0; p < game.jugadores; p++) {
             const cellPlayerScore = document.createElement("td");
             cellPlayerScore.innerHTML = game.scores[p][j];     //que se creen celdas de cant de juegos por la cant de los jugadores
-             // Aplica un color de fondo si es el turno actual
+             // aplica un color de fondo si es el turno actual
              if (p === game.turno - 1) {
-                cellPlayerScore.style.backgroundColor = "#A9D9B4"; // color de fondo para el jugador en turno
+                cellPlayerScore.style.backgroundColor = "#62B273"; // color de fondo para el jugador en turno
             }
             contGame.appendChild(cellPlayerScore);
         }
@@ -163,9 +156,9 @@ const drawScores = () => {
     for (let p = 0; p < game.jugadores; p++) {
         const cellPlayerTotal = document.createElement("td");
         cellPlayerTotal.innerHTML = game.scores[p][11];
-         // Aplica un color de fondo si es el turno actual
+         // aplica un color de fondo si es el turno actual
          if (p === game.turno - 1) {
-            cellPlayerTotal.style.backgroundColor = "#EDD6C6"; // color de fondo para el jugador en turno
+            cellPlayerTotal.style.backgroundColor = "#FFECC1"; // color de fondo para el jugador en turno
         }
         contTotal.appendChild(cellPlayerTotal);
     }
@@ -175,27 +168,9 @@ const drawScores = () => {
 const calculateScore = whichGame => {
     let score = 0;
     switch(whichGame) {
-        /*
-        //puntajes por números sin optimizar
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            break;
-        */
+      //comienza con los juegos
         case 6:
             if (isGameMatch(reEscalera)) {
-               /* 
-               if (isGameMatch(reEscalera)) {
-                    if (game.moves === 1) {
-                        score = 25;
-                    } else {
-                        score = 20;
-                    }
-                }
-                */
                 score = game.moves === 1 ? 25 : 20;
             }
             //si coincide con escalera
@@ -232,43 +207,27 @@ const calculateScore = whichGame => {
         //filtro los dados que no son del número que quiero, me quedo solo cn los que quiero y esos sumo
         //.filter es una función que cuando es true lo que devuelve se queda en el array y cuando es false no queda
             break;
-        
-        /*
-        const dadosQueMeInteresan = [];
-        for(let i = 0; i < game.dados.length; i++){
-            if (game.dados[i] === whichGame + 1) {
-                dadosQueMeInteresan.push(game.dados[i]);
-            }
-        }
-        let acc = 0;
-        for (let i = 0; i < dadosQueMeInteresan.length; i++){
-            acc += dadosQueMeInteresan[i]; //acc + cur
-        }
-        score = acc;
-        */
-
     }
     return score;
 }
 
-const isGameMatch = regaex => {
-    return game.dados.slice().sort((d1, d2) => d1 - d2).join("").match(regaex) !== null;//hago una copia del array, lo ordena, lo convierte en un string y lo matchea con la expresion regular de la generala
+const isGameMatch = regaex => { //verifica si matchea
+    return game.dados.slice().sort((d1, d2) => d1 - d2).join("").match(regaex) !== null;//hago una copia del array, lo ordena de menor a mayor, lo convierte en un string y lo matchea con la expresion regular de la generala
 }
 
 const drawDices = () => {
-    game.dados.forEach((dado, i) => {
+    game.dados.forEach((dado, i) => { //dado es el valor de cada dado (del 1 al 6), i es cada dado (del 0 al 4)
         const diceElement = document.querySelector(`.dados-container .dado-${i + 1}`);
         
         showDice(diceElement, dado);
 
-        // Agrega o quita la clase de selección visual según el estado de cada dado
+        // agrega o quita la clase de selección visual según el estado de cada dado
         if (game.dadosSeleccionados[i]) {
             diceElement.classList.add("dadosSeleccionados");
         } else {
             diceElement.classList.remove("dadosSeleccionados");
         }
         
-        //diceElement.innerHTML = dado;  // Muestra el valor actual de cada dado
     });
 };
 
@@ -277,14 +236,14 @@ const drawState = () => {
     document.getElementById("movesGenerala").innerHTML = game.moves;
 }
 
-//modal
+//boton aceptar del modal
 acceptButton.addEventListener("click", () => {
     hideModal();
     if (gameToScore !== null && acceptButton.innerHTML === "Tachar") {
         game.scores[game.turno - 1][gameToScore] = "X";
         changePlayerTurn();
         drawScores();
-        gameToScore = null; // Reset after using
+        gameToScore = null; // después de usarlo lo limpio para el próximo
     }
 });
 
@@ -297,17 +256,17 @@ cancelButton.addEventListener("click", () => {
 const rollDices = () => {
     for (let i = 0; i < game.dados.length; i++) {
         if (game.moves === 0 || game.dadosSeleccionados[i]) {
-            // Genera un valor aleatorio en la primera tirada o para los dados seleccionados
+            // genera un valor aleatorio en la primera tirada o para los dados seleccionados
             game.dados[i] = Math.floor(Math.random() * 6) + 1;
             console.log(`Dado ${i + 1}: ${game.dados[i]}`); // Muestra el valor de cada dado después de lanzarlo
         }
     }
     game.dadosSeleccionados = [false, false, false, false, false];
-    drawDices();  // Actualiza la vista de los dados con los valores de la tirada
+    drawDices();  // actualiza los dados
 
     console.log('---');
     //[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(whichGame => console.log(`Game ${getGameName(whichGame)} score: ${calculateScore(whichGame)}`));
-    console.log(`Tirada ${game.moves + 1}:`, game.dados); // Muestra el estado completo de los dados después de cada tirada
+    console.log(`Tirada ${game.moves + 1}:`, game.dados); // muestra el estado completo de los dados después de cada tirada
 
 
     game.moves++;
@@ -317,16 +276,16 @@ const rollDices = () => {
     if (game.moves === 3) {
         document.getElementById("roll-btn").setAttribute("disabled", "disabled");
     }
-    if (game.moves > 3) {             // Si el jugador ya hizo tres tiradas
-        game.turno++;                 // Cambia al siguiente jugador
+    if (game.moves > 3) {    // si el jugador ya hizo tres tiradas
+        game.turno++;    // cambia al siguiente jugador
         if (game.turno > game.jugadores) {
-            game.turno = 1;           // Si pasa el último jugador, vuelve al primero
+            game.turno = 1;  // si pasa el último jugador, vuelve al primero
         }
         game.moves = 0;
-        game.dados = [0, 0, 0, 0, 0]; // Al cambiar de turno, los dados se resetean a ceros (NUEVO)
-        drawDices();                  // Muestra los ceros en pantalla para el nuevo jugador (NUEVO)
+        game.dados = [0, 0, 0, 0, 0]; // al cambiar de turno, los dados se resetean a ceros
+        drawDices(); // y los vuelve a mostrar
     }
-    drawState();                      // Actualiza el estado del juego (jugador actual y tiradas)
+    drawState();    // actualiza el estado del juego (jugador actual y tiradas)
 };
 
 const changePlayerTurn = () => {
@@ -335,7 +294,7 @@ const changePlayerTurn = () => {
     game.moves = 0;
     game.turno++;
     if (game.turno > game.jugadores) {
-        game.turno = 1;           // Si pasa el último jugador, vuelve al primero
+        game.turno = 1;  
         game.round++;
         if(game.round === 12){
             gameOver();
@@ -351,9 +310,10 @@ const getGameName = whichGame => {
     return games[whichGame];
 }
 
+//se le aplica una clase a los dados seleccionados
 const toggleDiceSelection = diceNumber => {
     game.dadosSeleccionados[diceNumber] = !game.dadosSeleccionados[diceNumber]; //hace que lo que era true sea false y al reves
-    const diceElement = document.querySelector(`.dados-container .dado-${diceNumber + 1}`);//lo visual!!
+    const diceElement = document.querySelector(`.dados-container .dado-${diceNumber + 1}`);
     if (game.dadosSeleccionados[diceNumber]) {
         diceElement.classList.add("dadosSeleccionados");
     } else {
@@ -371,7 +331,6 @@ const gameOver = () => {
             winner = i;
         }
     }
-    //showModal(`J${winner + 1} ganó con ${winningScore} puntos!`, false);
     showModal(`J${winner + 1} ganó con ${winningScore} puntos!`, false, true);
 }
 
@@ -387,17 +346,17 @@ const drawDot = (ctx, x, y) => {
 const drawDice = (cont, number) => {
     let ctx = cont.getContext("2d");
 
-    // Limpia el canvas
+    // limpia el canvas
     ctx.clearRect(0, 0, DICE_SIZE, DICE_SIZE);
 
-    // Dibuja el cuadrado del dado
+    // dibuja el cuadrado del dado
     ctx.beginPath();
     ctx.rect(0, 0, DICE_SIZE, DICE_SIZE);
     ctx.fillStyle = "#ffffff";
     ctx.fill();
     ctx.closePath();
 
-    // Dibuja los puntos en función del número
+    // dibuja los puntos en función del número
     switch (number) {
         case 1:
             drawDot(ctx, AT_HALF, AT_HALF);
