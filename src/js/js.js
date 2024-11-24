@@ -37,6 +37,7 @@ function handleCellClick(event) { // funcion que se ejecuta al clickear la celda
         return; // si se cumple la condicion, termina
     }
     cell.textContent = jugador; 
+    changeColor(cell);
     cell.classList.add('bloqueada'); // una vez q se clickea queda bloqueada
     document.getElementById("btn-g1-back").setAttribute("disabled", "disabled");
 
@@ -73,7 +74,7 @@ function checkWin() {
 
 function marcarCeldasGanadoras(condition) {
   condition.forEach(index => {
-      cells[index].style.backgroundColor = "#E7919D"; 
+      cells[index].style.backgroundColor = "#FFECC1"; 
   });
 }
 
@@ -95,6 +96,7 @@ function resetGame() {
     cells.forEach(cell => { 
         cell.textContent = ""; 
         cell.style.backgroundColor = ""; // restaura el color de fondo al original
+        cell.style.color = "";
         cell.classList.remove('bloqueada'); // elimina la clase 'bloqueada' para desbloquear las celdas
     });
     turno.style.display = 'flex';
@@ -103,6 +105,13 @@ function resetGame() {
     gameOver = false; 
     resetButton.disabled = true; // boton deshabilitado
     document.getElementById("btn-g1-back").removeAttribute("disabled", "disabled");
+}
+function changeColor(element) {
+    if (jugador === "X") {
+        element.style.color = "#1C77C3";
+    } else {
+        element.style.color = "#E7919D";
+    }
 }
 
 // inicializa el juego

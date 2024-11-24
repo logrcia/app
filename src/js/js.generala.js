@@ -1,5 +1,5 @@
 
-const DICE_SIZE = 70;
+const DICE_SIZE = 60;
 const DOT_RADIUS = 0.1 * DICE_SIZE;
 const AT_QUARTER = 0.25 * DICE_SIZE;
 const AT_HALF = 0.5 * DICE_SIZE;
@@ -12,6 +12,7 @@ const modalMessage = document.getElementById("modal-message");
 const acceptButton = document.getElementById("accept-btn");
 const cancelButton = document.getElementById("cancel-btn");
 const restartButton = document.getElementById("restart-btn");
+const backToMain = document.getElementById("back-to-main");
 
 
 
@@ -51,6 +52,10 @@ const initGame = () => {
     drawScores();
 };
 
+function showSection(sectionId){
+    document.getElementById(sectionId).classList.remove("nodisp");
+}
+
 // muestra el modal
 const showModal = (message, confirmar = false, reiniciar = false) => {
     modalContent.style.display = "flex";
@@ -63,12 +68,20 @@ const showModal = (message, confirmar = false, reiniciar = false) => {
     cancelButton.style.display = confirmar ? "block" : "none";
     //muestra el boton solo cuando reiniciar es true
     restartButton.style.display = reiniciar ? "block" : "none";
+    backToMain.style.display = reiniciar ? "block" : "none";
     if (reiniciar) {
         restartButton.onclick = () => {
             initGame(); 
             hideModal();
             document.getElementById("btn-g2-back").removeAttribute("disabled", "disabled");
         };
+        backToMain.onclick = () => {
+            hideModal();
+            initGame();
+            showSection("main");
+            document.getElementById("g2").classList.add("nodisp");
+            document.getElementById("btn-g2-back").removeAttribute("disabled", "disabled");
+        }
     }else{
         restartButton.onclick = null; //limpiar el evento
     }
@@ -112,6 +125,7 @@ const drawScores = () => {
              // aplica un color de fondo si es el turno actual
              if (p === game.turno - 1) {
                 cellPlayerScore.style.backgroundColor = "#62B273"; // color de fondo para el jugador en turno
+
             }
             contGame.appendChild(cellPlayerScore);
         }

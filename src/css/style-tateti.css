@@ -16,6 +16,7 @@
     color: #000;
     border: 2px solid #000;
     font-size: 2em;
+    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,7 +29,7 @@
 button {
     padding: 10px 20px;
     font-size: 1.2em;
-    margin-top: 20px;
+    
 }
 
 button:disabled {
@@ -41,7 +42,8 @@ button:disabled {
     color: #E7919D;
     display: none;
     text-align: center;
-    margin-top: 20px;
+    margin: 16px 0px;
+    font-size: 1.5em;
 }
 
 
@@ -53,12 +55,20 @@ button:disabled {
     display: flex;
     margin: auto;
     background-color: #FFECC1;
+    margin: 20px auto;
 }
 
 #turno{
     display: flex;
     justify-content: center;
+    margin: 16px 0px;
+    font-size: 1.5em;
 }
+
+#turno span{
+    margin-left: 15px;
+}
+
 
 #h1-tateti{
     display: flex;
@@ -68,11 +78,20 @@ button:disabled {
 @media (orientation: landscape) and (max-width: 1024px) {
     #cont-tateti{
         margin-top: 0%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #text-tateti{
+        display: flex;
+        flex-direction: column;
+        width: 50%;
     }
 
     #g1 #cont-tateti h1{
-        font-size: 1em;
         margin-top: 0px;
+        font-size: 1.7em;
     }
 
     #btn-g1-back{
@@ -80,29 +99,16 @@ button:disabled {
         margin-top: 10px;
       }
     
-    .ganador{
-        font-size: 1em
-      }
     
-    #tablero{
-        grid-template-columns: repeat(3, 60px);
-        grid-template-rows: repeat(3, 60px);
-        margin: 8px auto;
-      }
 
       #reset{
         font-size: 1em;
       }
 
-    #g1 #turno{
-        font-size: 1em;
-        margin-top: 0px;
-      }
+  
     .ganador {
-        font-size: 1em;
         display: none;
         text-align: center;
-        margin-top: 0px;
     }
     
 }
