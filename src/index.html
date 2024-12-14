@@ -52,6 +52,7 @@
 
     <script src="./js/js.js" type="module"></script>
   </div>
+
   <div id="g2" class="game nodisp">
     <div class="game-cont">
       <div id="texto-dados-generala">
@@ -62,6 +63,7 @@
 
         <h1>Generala</h1>
 
+        <div id="overlay"></div>
         <div id="modal-content" class="modal" style="display: none;">
           <div class="div-modal">
             <p id="modal-message">Título del modal</p>
@@ -101,8 +103,33 @@
 
   <div id="g3" class="game nodisp">
     <button id="btn-g3-back">Volver</button>
-    <h2>Game 3</h2>
-    <p>El juego 3 acá...</p>
+    <h1>Preguntados</h1>
+
+    <div id="reloj-container">
+      <span id="reloj">20</span> segundos
+    </div>
+
+    <div id="score-preg">
+      <p>Jugador 1: <span id="puntaje-j0">0</span> puntos</p>
+      <p>Jugador 2: <span id="puntaje-j1">0</span> puntos</p>
+    </div>
+
+    <p id="turno-preg">Turno de: Jugador <span id="turno-actual"></span> , intento <span id="intento"></span></p>
+    <p>Ronda: <span id="round-preg"></span></p>
+
+    <div id="categoria-container">
+      
+      <div id="categorias"></div>
+    </div>
+
+  
+    <div id="pregunta-container" style="display: none;">
+      <h3>Categoría: <span id="categoria-seleccionada"></span></h3>
+      <div id="pregunta">Aquí va la pregunta</div>
+      <div id="opciones"></div>
+    </div>
+
+    <script src="./js/js.preguntados.js" type="module"></script>
   </div>
   
   

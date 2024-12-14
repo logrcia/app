@@ -13,6 +13,7 @@ const acceptButton = document.getElementById("accept-btn");
 const cancelButton = document.getElementById("cancel-btn");
 const restartButton = document.getElementById("restart-btn");
 const backToMain = document.getElementById("back-to-main");
+const overlay = document.getElementById("overlay");
 
 
 
@@ -59,6 +60,7 @@ function showSection(sectionId){
 // muestra el modal
 const showModal = (message, confirmar = false, reiniciar = false) => {
     modalContent.style.display = "flex";
+    overlay.style.display = "block";
     modalMessage.innerHTML = message;
     //si confirmar es true el botón dice "Tachar", sino "Cerrar"
     acceptButton.innerHTML = confirmar ? "Tachar" : "Cerrar";
@@ -90,6 +92,7 @@ const showModal = (message, confirmar = false, reiniciar = false) => {
 // oculta el modal
 const hideModal = () => {
     modalContent.style.display = "none";
+    overlay.style.display = "none";
 };
 
 
@@ -106,6 +109,9 @@ const drawScores = () => {
         const cellPlayerName = document.createElement("th");
         cellPlayerName.innerHTML = `J${i + 1}`;
         contHeader.appendChild(cellPlayerName);
+        if (i === game.turno - 1) {
+            cellPlayerName.style.backgroundColor = "#FFECC1"; // color de fondo para el jugador en turno
+        }
     }
 
     // juegos
@@ -125,7 +131,6 @@ const drawScores = () => {
              // aplica un color de fondo si es el turno actual
              if (p === game.turno - 1) {
                 cellPlayerScore.style.backgroundColor = "#62B273"; // color de fondo para el jugador en turno
-
             }
             contGame.appendChild(cellPlayerScore);
         }
