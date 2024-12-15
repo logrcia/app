@@ -148,7 +148,7 @@ button{
   cursor: default;
 }
 
-#overlay {
+.overlay {
   position: fixed; /* Cubre toda la ventana */
   top: 0;
   left: 0;
