@@ -18,6 +18,10 @@ const overlay = document.getElementById("overlay-preg");
 
 const preguntaContainer = document.getElementById("pregunta-container");
 
+const wheel = document.getElementById('wheel');
+const spinButton = document.getElementById('spinButton');
+const resultDisplay = document.getElementById('result');
+const rouletteContainer = document.getElementById("roulette-container");
 
 const game = {
     score: [0, 0],
@@ -108,6 +112,7 @@ const initGame = () => {
     game.moves = 1;
     game.score = [0, 0];
     reloj.innerHTML = 20;
+    rouletteContainer.style.display = "flex";
     createCategories();
     options.addEventListener("click", selectOption);
     drawState();
@@ -128,6 +133,7 @@ const showModal = (message, correct = false, reiniciar = false) => {
     if (reiniciar) {
         restartButton.style.display = "block";
         backToMain.style.display = "block";
+        preguntaContainer.style.display = "none";
     } else {
         correctButton.style.display = correct ? "block" : "none";
         incorrectButton.style.display = !correct ? "block" : "none";
@@ -137,10 +143,12 @@ const showModal = (message, correct = false, reiniciar = false) => {
 
 correctButton.addEventListener("click", () => {
     hideModal();
+    rouletteContainer.style.display = "flex";
 });
 
 incorrectButton.addEventListener("click", () => {
     hideModal();
+    rouletteContainer.style.display = "flex";
 });
 
 restartButton.addEventListener("click", () => {
@@ -161,6 +169,39 @@ const hideModal = () => {
     overlay.style.display = "none";
     preguntaContainer.style.display = "none";
 };
+
+
+spinButton.addEventListener('click', () => {
+    // Disable button during spin
+    spinButton.disabled = true;
+    resultDisplay.textContent = '';
+
+    // Random rotation with deceleration effect
+    const totalRotation = 1800 + Math.random() * 360; // At least 5 full rotations
+    wheel.style.transition = "transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)";
+    wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+    // Determine selected category after spin
+    setTimeout(() => {
+        // Calculate final position
+        const finalRotation = totalRotation % 360;
+        const categoryIndex = Math.floor(finalRotation / 72);
+        
+        const randomIndex = Math.floor(Math.random() * game.categories.length);
+        game.currentCategory = game.categories[randomIndex];
+
+        // Display the result
+        resultDisplay.textContent = game.currentCategory.name;
+        preguntaContainer.style.display = "block";
+        showCategory(); 
+        rouletteContainer.style.display = "none";
+
+        // Reset wheel and re-enable button
+        wheel.style.transition = "none";
+        wheel.style.transform = "rotate(0deg)";
+        spinButton.disabled = false;
+    }, 4000);
+});
 
 
 const startTimer = () => {

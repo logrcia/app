@@ -127,7 +127,17 @@
     <p id="turno-preg">Turno de: Jugador <span id="turno-actual"></span> , intento <span id="intento"></span></p>
     <p>Ronda: <span id="round-preg"></span></p>
 
-
+    <div id="roulette-container" class="roulette-container">
+      <div class="category-pointer">▼</div>
+      <div class="category-wheel" id="wheel">
+          <div class="category-slot" style="background-color: #3475D3; transform: rotate(0deg)"></div>
+          <div class="category-slot" style="background-color: #FA9BD1; transform: rotate(90deg)"></div>
+          <div class="category-slot" style="background-color: #F62633; transform: rotate(180deg)"></div>
+          <div class="category-slot" style="background-color: #F1CC37; transform: rotate(270deg)"></div>
+      </div>
+      <button class="spin-button" id="spinButton">Girar</button>
+      <div class="result-display" id="result"></div>
+    </div>
     
     <div id="categoria-container">
       
