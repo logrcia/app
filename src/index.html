@@ -103,29 +103,29 @@
 
   <div id="g3" class="game nodisp">
     <button id="btn-g3-back">Volver</button>
-    <h1>Preguntados</h1>
+    <h1 id="h1-preg">Preguntados</h1>
 
-    <div id="overlay-preg" class="overlay"></div>
+      <div id="overlay-preg" class="overlay"></div>
         <div id="modal-content-preg" class="modal" style="display: none;">
           <div class="div-modal-preg">
             <p id="modal-message-preg">Título del modal</p>
-            <button id="correct-btn-preg">siguiente</button>
-            <button id="incorrect-btn-preg">incorrecto</button>
+            <button id="correct-btn-preg">Siguiente</button>
+            <button id="incorrect-btn-preg">Continuar</button>
             <button id="restart-btn-preg" style="display: none;">Reiniciar Juego</button>
             <button id="back-to-main-preg" style="display: none;">Volver a la página principal</button>
           </div>
         </div>
 
-    <div id="reloj-container">
-      <span id="reloj">20</span> segundos
-    </div>
+    <div id="preg-main-info">
+        <div id="round-moves-preg">
+          <p>Ronda: <span id="round-preg"></span></p>
+          <p>Intento: <span id="intento"></span></p>
+        </div>
 
-    <div id="score-preg">
-      
+        <div id="score-preg">
+          
+        </div>
     </div>
-
-    <p id="turno-preg">Turno de: Jugador <span id="turno-actual"></span> , intento <span id="intento"></span></p>
-    <p>Ronda: <span id="round-preg"></span></p>
 
     <div id="roulette-container" class="roulette-container">
       <div class="category-pointer">▼</div>
@@ -136,18 +136,18 @@
           <div class="category-slot" style="background-color: #F1CC37; transform: rotate(270deg)"></div>
       </div>
       <button class="spin-button" id="spinButton">Girar</button>
-      <div class="result-display" id="result"></div>
-    </div>
-    
-    <div id="categoria-container">
       
-      <div id="categorias"></div>
     </div>
 
+    <div id="reloj-container" style="display: none;">
+      <span id="reloj">20</span>s
+    </div>
   
     <div id="pregunta-container" style="display: none;">
-      <h3>Categoría: <span id="categoria-seleccionada"></span></h3>
-      <div id="pregunta">Aquí va la pregunta</div>
+      <div id="category-question">
+        <h3>Categoría: <span id="categoria-seleccionada"></span></h3>
+        <div id="pregunta">Aquí va la pregunta</div>
+      </div>
       <div id="opciones"></div>
     </div>
 

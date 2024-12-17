@@ -58,6 +58,10 @@ body {
   background-color: #A9D9B4; 
 }
 
+#g3{
+  background-color: #b1ddfb;
+}
+
 button{
   font-size: 16px;
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 1);
@@ -187,7 +191,7 @@ button{
 }
  
 
-#modal-content{
+#modal-content, #modal-content-preg{
   background-color: #FFECC1; /*#FFECC1;*/
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 1);
   border: 3px solid black;
@@ -196,9 +200,9 @@ button{
   text-align: center;
 }
 
-#g3{
-  background-color: green;
-  color: white;
+.div-modal-preg button{
+  width: 100%;
+  margin: 0 auto;
 }
 
 #main, .game{
@@ -239,7 +243,90 @@ button{
     clip-path: polygon(50% 50%, 0 0, 100% 0);
 }
 
+.spin-button{
+  margin-top: 20px;
+  background-color: #FFECC1;
+  font-size: 1.8em;
+  font-weight: bold;
+  border-radius: 40px;
+}
 
+#score-preg{
+  display: flex;
+  justify-content: space-between;
+  margin: auto 10px;
+  font-size: 1.4em;
+  flex-direction: column;
+}
+
+#round-moves-preg{
+  display: flex;
+  justify-content: space-between;
+  margin: auto 50px;
+  font-size: 1.2em;
+}
+
+#preg-main-info{
+  display: flex;
+  flex-direction: column;
+}
+
+#round-preg, #intento, #score-preg, #reloj{
+  font-weight: bold;
+}
+
+#reloj-container{
+  display: flex;
+  font-size: 1.3em;
+  padding: 15px;
+  border: 2px solid black;
+  width: fit-content;
+  margin: 0 auto;
+  border-radius: 40px;
+  margin-top: 20px;
+}
+
+#opciones{
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+}
+
+#pregunta-container{
+  height: fit-content;
+  border-radius: 50px;
+  border: 3px solid black;
+  margin: 10% 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#pregunta-container #opciones button{
+  margin-bottom: 1em;
+  font-size: 1.4em;
+}
+
+#category-question{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em;
+  margin-bottom: 10%;
+}
+
+#category-question h3{
+  font-size: 1.4em;
+}
+
+#pregunta{
+  font-size: 1.8em;
+  text-align: center;
+}
+
+#modal-message-preg{
+  font-size: 1.5em;
+}
 
 /* ajustes para pantalla en modo horizontal en móviles */
 @media (orientation: landscape) and (max-width: 1024px) {
