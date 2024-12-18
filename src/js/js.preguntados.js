@@ -199,15 +199,18 @@ spinButton.addEventListener('click', () => {
     setTimeout(() => {
         // Calculate final position
         const finalRotation = totalRotation % 360;
-        const categoryIndex = Math.floor(finalRotation / 72);
+
+
         
-        const randomIndex = Math.floor(Math.random() * game.categories.length);
-        game.currentCategory = game.categories[randomIndex];
+        game.currentCategory = Math.floor(finalRotation / 72);
+        
+        shuffleCategories();
+        
 
         // Display the result
         questionDisplay();
         showCategory(); 
-        //startTimer(game.timer = 10);
+        startTimer(game.timer = 20);
 
         // Reset wheel and re-enable button
         wheel.style.transition = "none";
