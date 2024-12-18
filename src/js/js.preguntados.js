@@ -32,7 +32,7 @@ const game = {
             name: "Geografía",
             questions: [
                 { question: "¿Cuál es el río más largo del mundo?", options: ["Amazonas", "Nilo", "Yangtsé", "Misisipi"], correctIndex: 0 },
-             /*   { question: "¿Cuál es la capital de Argentina", options: ["San Luis", "Neuquén", "La Pampa", "Buenos Aires"], correctIndex: 3 },
+                { question: "¿Cuál es la capital de Argentina", options: ["San Luis", "Neuquén", "La Pampa", "Buenos Aires"], correctIndex: 3 },
                 { question: "¿En qué continente se encuentra el desierto del Sahara?", options: ["Asia", "América", "África", "Oceanía"], correctIndex: 2 },
                 { question: "¿Cuál es el país más grande del mundo por superficie?", options: ["Canadá", "China", "Rusia", "Brasil"], correctIndex: 2 },
                 { question: "¿Qué país tiene la mayor cantidad de islas?", options: ["Indonesia", "Suecia", "Filipinas", "Japón"], correctIndex: 1 },
@@ -40,7 +40,7 @@ const game = {
                 { question: "¿Qué cordillera es la más larga del mundo?", options: ["Himalaya", "Andes", "Alpes", "Montañas Rocosas"], correctIndex: 1 },
                 { question: "¿Qué país tiene el mayor número de habitantes?", options: ["India", "Estados Unidos", "China", "Brasil"], correctIndex: 2 },
                 { question: "¿Qué isla es la más grande del mundo?", options: ["Madagascar", "Nueva Guinea", "Borneo", "Groenlandia"], correctIndex: 3 },
-                { question: "¿Cuál es la capital de Australia?", options: ["Sídney", "Melbourne", "Canberra", "Brisbane"], correctIndex: 2 }, */
+                { question: "¿Cuál es la capital de Australia?", options: ["Sídney", "Melbourne", "Canberra", "Brisbane"], correctIndex: 2 }, 
             ],
             color: "#80b4ff"
         },
@@ -48,7 +48,7 @@ const game = {
             name: "Entretenimiento",
             questions: [
                 { question: "¿Cuál es la película más taquillera de la historia?", options: ["Avatar", "Avengers: Endgame", "Titanic", "El Rey León"], correctIndex: 0 },
-               /* { question: "¿Qué banda cantó Bohemian Rhapsody?", options: ["The Beatles", "Queen", "Pink Floyd", "The Rolling Stones"], correctIndex: 1 },
+                { question: "¿Qué banda cantó Bohemian Rhapsody?", options: ["The Beatles", "Queen", "Pink Floyd", "The Rolling Stones"], correctIndex: 1 },
                 { question: "¿Qué serie tiene el récord de mayor cantidad de premios Emmy ganados?", options: ["Game of Thrones", "Friends", "The Simpsons", "Breaking Bad"], correctIndex: 0 },
                 { question: "¿Qué banda lanzó el álbum The Dark Side of the Moon?", options: ["Led Zeppelin", "Queen", "Pink Floyd", "The Rolling Stones"], correctIndex: 2 },
                 { question: "¿Quién protagonizó la película Forrest Gump?", options: ["Leonardo DiCaprio", "Brad Pitt", "Johnny Depp", "Tom Hanks"], correctIndex: 3 },
@@ -56,7 +56,7 @@ const game = {
                 { question: "¿Cómo se llama el villano principal en Los Vengadores: Infinity War?", options: ["Loki", "Thanos", "Ultron", "Red Skull"], correctIndex: 1 },
                 { question: "¿Cuál es la película animada con mayor recaudación en la historia?", options: ["Intensamente 2", "Frozen II", "El Rey León", "Toy Story 4"], correctIndex: 0 },
                 { question: "¿Qué álbum de la famosa cantante Taylor Swift contiene la canción 22", options: ["1989", "Reputation", "Fearless", "Red"], correctIndex: 3 },
-                { question: "¿En qué año se emitió el primer episodio de Los Simpson?", options: ["1985", "1987", "1989", "1990"], correctIndex: 2 }, */
+                { question: "¿En qué año se emitió el primer episodio de Los Simpson?", options: ["1985", "1987", "1989", "1990"], correctIndex: 2 }, 
             ],
             color: "#ff9ad4"
         },
@@ -64,7 +64,7 @@ const game = {
             name: "Arte",
             questions: [
                 { question: "¿Quién pintó la famosa obra La última cena?", options: ["Leonardo da Vinci", "Miguel Ángel", "Vincent van Gogh", "Salvador Dalí"], correctIndex: 0 },
-             /*   { question: "¿De qué país es originario el arte del origami?", options:["China", "Corea", "Japón", "Tailandia"], correctIndex: 2 },
+                { question: "¿De qué país es originario el arte del origami?", options:["China", "Corea", "Japón", "Tailandia"], correctIndex: 2 },
                 { question: "¿A qué movimiento artístico pertenece Salvador Dalí?", options: ["Impresionismo", "Cubismo", "Surrealismo", "Expresionismo"], correctIndex: 2 },
                 { question: "¿Quién esculpió el David?", options: ["Donatello", "Miguel Ángel", "Rodin", "Bernini"], correctIndex: 1 },
                 { question: "¿Quién pintó La noche estrellada?", options: ["Vincent van Gogh", "Claude Monet", "Edgar Degas", "Paul Gauguin"], correctIndex: 0 },
@@ -72,7 +72,7 @@ const game = {
                 { question: "¿Quién pintó Las Meninas?", options: ["Diego Velázquez", "El Greco", "Francisco de Goya", "Joaquín Sorolla"], correctIndex: 0 },
                 { question: "¿Quién pintó el techo de la Capilla Sixtina?", options: ["Rafael", "Miguel Ángel", "Leonardo da Vinci", "Caravaggio"], correctIndex: 1 },
                 { question: "¿Quién es el autor del famoso cuadro El grito?", options: ["Edvard Munch", "Gustav Klimt", "Paul Cézanne", "Henri Matisse"], correctIndex: 0 },
-                { question: "¿En qué ciudad se encuentra el Museo del Prado?", options: ["París", "Barcelona", "Roma", "Madrid"], correctIndex: 3 }, */
+                { question: "¿En qué ciudad se encuentra el Museo del Prado?", options: ["París", "Barcelona", "Roma", "Madrid"], correctIndex: 3 }, 
             ],
             color: "#ee646d"
         },
@@ -80,7 +80,7 @@ const game = {
             name: "Historia",
             questions: [
                 { question: "¿En qué año se descubrió América?", options: ["1452", "1492", "1512", "1482"], correctIndex: 1 },
-             /*   { question: "¿En qué país comenzó la Revolución Industrial?", options: ["Inglaterra", "Francia", "Alemania", "Argentina"], correctIndex: 0 },
+                { question: "¿En qué país comenzó la Revolución Industrial?", options: ["Inglaterra", "Francia", "Alemania", "Argentina"], correctIndex: 0 },
                 { question: "¿En qué año comenzó la Primera Guerra Mundial?", options: ["1912", "1914", "1916", "1918"], correctIndex: 1 },
                 { question: "¿Quién fue el primer presidente de los Estados Unidos?", options: ["Abraham Lincoln", "Thomas Jefferson", "George Washington", "John Adams"], correctIndex: 2 },
                 { question: "¿Qué civilización construyó la ciudad de Machu Picchu?", options: ["Azteca", "Inca", "Maya", "Olmeca"], correctIndex: 1 },
@@ -88,7 +88,7 @@ const game = {
                 { question: "¿Cuál fue el primer país en abolir la esclavitud?", options: ["Estados Unidos", "Francia", "Haití", "Inglaterra"], correctIndex: 2 },
                 { question: "¿Qué mujer francesa lideró tropas durante la Guerra de los Cien Años?", options: ["María Antonieta", "Juana de Arco", "Catalina de Médici", "Leonor de Aquitania"], correctIndex: 1 },
                 { question: "¿En qué año terminó la Segunda Guerra Mundial?", options: ["1943", "1944", "1945", "1946"], correctIndex: 2 },
-                { question: "¿Quién fue el líder de la campaña libertadora del sur de América?", options: ["Simón Bolívar", "Manuel Belgrano", "Juan Manuel de Rosas", "José de San Martín"], correctIndex: 3 }, */
+                { question: "¿Quién fue el líder de la campaña libertadora del sur de América?", options: ["Simón Bolívar", "Manuel Belgrano", "Juan Manuel de Rosas", "José de San Martín"], correctIndex: 3 },
             ],
             color: "#fcd94e"
         }
@@ -179,7 +179,6 @@ backToMain.addEventListener("click", () => {
     document.getElementById("g3").classList.add("nodisp");
 });
 
-
 const hideModal = () => {
     modalContent.style.display = "none";
     overlay.style.display = "none";
@@ -208,7 +207,7 @@ spinButton.addEventListener('click', () => {
         // Display the result
         questionDisplay();
         showCategory(); 
-        //startTimer(game.timer = 20);
+        //startTimer(game.timer = 10);
 
         // Reset wheel and re-enable button
         wheel.style.transition = "none";
@@ -233,10 +232,12 @@ const startTimer = () => {
             clearInterval(timer);
             console.log("¡Tiempo agotado!"); // Mensaje de tiempo agotado
             showModal(`¡Se agotó el tiempo!`, false, false);
+            game.turno = (game.turno % 2) + 1;
+            drawState();
+            console.log(game.turno);
         }
     }, 1000);
 };
-
 
 const shuffleCategories = () => {
     // mezcla las categorías
@@ -253,7 +254,6 @@ const showCategory = () => {
     createOptions(); 
 }
 
-
 const showQuestion = () => {
     
     const pregunta = document.getElementById("pregunta");
@@ -267,9 +267,6 @@ const showQuestion = () => {
         pregunta.innerHTML = currentQuestion;
     };
 };
-
-
-
 
 let currentQuestion;
 let newCorrectIndex;
@@ -382,7 +379,6 @@ const determinarGanador = () => {
         let winningScore;
         
     if(game.score[0] === game.score[1]){
-            alert("empate, no gano ninguno");
             showModal(`Empate! no gano ninguno`, false, true);
     }else if(game.score[0] !== game.score[1]){
         if(game.score[0] >= game.score[1]){
@@ -392,7 +388,6 @@ const determinarGanador = () => {
             winningScore = game.score[1];
             winner = "2";
         }
-        //alert(`J${winner + 1} ganó con ${winningScore} puntos!`);
         showModal(`J${winner + 1} ganó con ${winningScore} puntos!`, false, true);
     }
             

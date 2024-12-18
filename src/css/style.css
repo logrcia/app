@@ -80,6 +80,7 @@ button{
   padding: 10px;
   font-size: 12px;
   background-color: #FFECC1;
+  height: fit-content;
 }
 
 #headerGenerala {
@@ -266,6 +267,11 @@ button{
   font-size: 1.2em;
 }
 
+#main-preg{
+  display: flex;
+  flex-direction: column;
+}
+
 #preg-main-info{
   display: flex;
   flex-direction: column;
@@ -397,4 +403,56 @@ button{
   #g2 .scores th, #g2 .scores td{
     padding: 7px;
   }
+
+  #h1-preg{
+    font-size: 2em;
+  }
+  
+  #main-preg{
+    flex-direction: row;
+    width: 100%;
+  }
+
+  #headerPreg{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #g3 h1{
+    margin-right: 20px;
+  }
+
+  #preg-main-info {
+    width: 50%;
 }
+
+.roulette-container{
+  width: 50%;
+}
+
+.category-wheel{
+  width: 150px;
+  height: 150px;
+}
+
+#reloj-container{
+  margin: 0px;
+  font-size: 1.2em;
+}
+
+#pregunta-container{
+  width: 90%;
+  margin: 0% 5%;
+  align-items: center;
+  flex-direction: row;
+}
+
+#category-question{
+  width: 45%;
+}
+
+#opciones{
+  width: 45%;
+}
+}
+
