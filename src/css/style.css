@@ -29,8 +29,12 @@ body {
   font-style: normal;
 }
 
+#main svg{
+  margin: 10px;
+}
+
 .btn-main{
-  font-weight: bold;
+  font-weight: 700;
 }
 
 #main button{
@@ -40,7 +44,7 @@ body {
   background-color: #FFECC1;
   text-transform: uppercase;
   border-radius: 20px;
-  font-weight: bold;
+  font-weight: 700;
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 1);
   display: flex;
   flex-direction: column;
@@ -165,7 +169,7 @@ button{
 }
 
 #g2 .scores table tbody tr:last-of-type td {
-  font-weight: bold;
+  font-weight: 700;
   cursor: default;
 }
 
@@ -293,7 +297,7 @@ button{
 }
 
 #round-preg, #intento, #score-preg, #reloj{
-  font-weight: bold;
+  font-weight: 700;
 }
 
 #reloj-container{
