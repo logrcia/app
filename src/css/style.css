@@ -7,7 +7,11 @@ body {
 }
 
 *{
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+  /*font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif*/
+  font-family: "Comfortaa", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
 }
 
 #main{
@@ -22,8 +26,11 @@ body {
   font-size: 36px;
   text-transform: uppercase;
   font-family: "Titan One", sans-serif;
-  font-weight: 400;
   font-style: normal;
+}
+
+.btn-main{
+  font-weight: bold;
 }
 
 #main button{
@@ -50,7 +57,8 @@ body {
 
 
 #g1{
-  background-color: #FADADF;
+ /* background-color: #FADADF;*/
+ background-color: #A9D9B4;
 }
 
 
@@ -59,7 +67,8 @@ body {
 }
 
 #g3{
-  background-color: #b1ddfb;
+ /* background-color: #b1ddfb;*/
+ background-color: #A9D9B4;
 }
 
 button{
@@ -74,6 +83,13 @@ button{
   display: flex;
   justify-content: center;
   margin: 0px;
+}
+
+.btn-main{
+  padding: 10px;
+  font-size: 12px;
+  background-color: #FFECC1;
+  height: fit-content;
 }
 
 #btn-g1-back, #btn-g2-back, #btn-g3-back{
@@ -196,8 +212,8 @@ button{
   background-color: #FFECC1; /*#FFECC1;*/
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 1);
   border: 3px solid black;
+  border-radius: 30px;
   padding: 20px;
-  border-radius: 5px;
   text-align: center;
 }
 
@@ -248,7 +264,6 @@ button{
   margin-top: 20px;
   background-color: #FFECC1;
   font-size: 1.8em;
-  font-weight: bold;
   border-radius: 40px;
 }
 
@@ -332,6 +347,10 @@ button{
 
 #modal-message-preg{
   font-size: 1.5em;
+}
+
+#restart-btn-preg{
+  margin-bottom: 20px;
 }
 
 /* ajustes para pantalla en modo horizontal en móviles */

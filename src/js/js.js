@@ -108,9 +108,9 @@ function resetGame() {
 }
 function changeColor(element) {
     if (jugador === "X") {
-        element.style.color = "#1C77C3";
+        element.style.color = "#304FBD";
     } else {
-        element.style.color = "#E7919D";
+        element.style.color = "#BD3165";
     }
 }
 

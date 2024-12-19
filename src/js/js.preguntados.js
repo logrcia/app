@@ -1,6 +1,7 @@
 const options = document.getElementById("opciones");
 let buttonCategories;
 let buttonOption;
+
 let timer;
 const reloj = document.getElementById("reloj");
 const relojContainer = document.getElementById("reloj-container"); 
@@ -11,16 +12,15 @@ const modalContent = document.getElementById("modal-content-preg");
 const modalMessage = document.getElementById("modal-message-preg");
 const correctButton = document.getElementById("correct-btn-preg");
 const incorrectButton = document.getElementById("incorrect-btn-preg");
+
 const restartButton = document.getElementById("restart-btn-preg");
 const backToMain = document.getElementById("back-to-main-preg");
 const overlay = document.getElementById("overlay-preg");
-
 
 const preguntaContainer = document.getElementById("pregunta-container");
 
 const wheel = document.getElementById('wheel');
 const spinButton = document.getElementById('spinButton');
-
 const rouletteContainer = document.getElementById("roulette-container");
 
 const game = {
@@ -108,15 +108,13 @@ const initGame = () => {
     game.moves = 1;
     game.score = [0, 0];
     reloj.innerHTML = 20;
-    rouletteContainer.style.display = "flex";
     options.addEventListener("click", selectOption);
     drawState();
 };
 
-//MODALS
+
 
 const showModal = (message, correct = false, reiniciar = false) => {
-    //console.log(correct);
     modalContent.style.display = "flex";
     overlay.style.display = "block";
     modalMessage.innerHTML = message;
@@ -126,11 +124,10 @@ const showModal = (message, correct = false, reiniciar = false) => {
     incorrectButton.style.display = "none";
     restartButton.style.display = "none";
     backToMain.style.display = "none";
-
+    //muestran los botones que corresponden
     if (reiniciar) {
         restartButton.style.display = "block";
         backToMain.style.display = "block";
-        preguntaContainer.style.display = "none";
     } else {
         correctButton.style.display = correct ? "block" : "none";
         incorrectButton.style.display = !correct ? "block" : "none";
@@ -169,12 +166,14 @@ restartButton.addEventListener("click", () => {
     hideModal();
     initGame();
     mainDisplay();
+    document.getElementById("btn-g3-back").removeAttribute("disabled", "disabled");
 });
 
 backToMain.addEventListener("click", () => {
     hideModal();
     initGame();
     mainDisplay();
+    document.getElementById("btn-g3-back").removeAttribute("disabled", "disabled");
     document.getElementById("main").classList.remove("nodisp");
     document.getElementById("g3").classList.add("nodisp");
 });
@@ -183,41 +182,6 @@ const hideModal = () => {
     modalContent.style.display = "none";
     overlay.style.display = "none";
 };
-
-//RULETA + MUESTRA PREGUNTACONTAINER
-spinButton.addEventListener('click', () => {
-    // Disable button during spin
-    spinButton.disabled = true;
-    
-
-    // Random rotation with deceleration effect
-    const totalRotation = 1800 + Math.random() * 360; // At least 5 full rotations
-    wheel.style.transition = "transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)";
-    wheel.style.transform = `rotate(${totalRotation}deg)`;
-
-    // Determine selected category after spin
-    setTimeout(() => {
-        // Calculate final position
-        const finalRotation = totalRotation % 360;
-
-
-        
-        game.currentCategory = Math.floor(finalRotation / 72);
-        
-        shuffleCategories();
-        
-
-        // Display the result
-        questionDisplay();
-        showCategory(); 
-        startTimer(game.timer = 20);
-
-        // Reset wheel and re-enable button
-        wheel.style.transition = "none";
-        wheel.style.transform = "rotate(0deg)";
-        spinButton.disabled = false;
-    }, 4000);
-});
 
 //TIMER
 const startTimer = () => {
@@ -242,11 +206,53 @@ const startTimer = () => {
     }, 1000);
 };
 
-const shuffleCategories = () => {
-    // mezcla las categorías
-    const randomIndex = Math.floor(Math.random() * game.categories.length);
-    game.currentCategory = game.categories[randomIndex];
-};
+//RULETA + MUESTRA PREGUNTACONTAINER
+spinButton.addEventListener('click', () => {
+    document.getElementById("btn-g3-back").setAttribute("disabled", "disabled");
+    // Disable button during spin
+    spinButton.disabled = true;
+    
+    // Completely remove any existing rotation transform
+    wheel.style.removeProperty('transform');
+    
+    // Force a reflow to ensure the reset takes effect
+    void wheel.offsetWidth;
+
+    // crea una rotacion aleatoria, da al menos 5 vueltas
+    const totalRotation = 1800 + Math.random() * 360; 
+    wheel.style.transition = "transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)";
+    wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+    // cuando termina de girar sale categoría aleatoria
+    setTimeout(() => {
+        
+        const finalRotation = totalRotation % 360; // calcula el angul final descontando las vueltas completas (el resto de 360)
+        const sectors = game.categories.length; // Número de categorías dinámico
+        const degreesPerSector = 360 / sectors; // Tamaño de cada sector
+
+
+        const categoryIndex = Math.floor((360 - finalRotation) / degreesPerSector) % sectors;
+
+        const selectedColor = game.categories[categoryIndex].color;
+        
+        // Detailed console logs for debugging
+        console.log("Total Rotation:", totalRotation);
+        console.log("Final Rotation:", finalRotation);
+        console.log("Degrees per Sector:", degreesPerSector);
+        console.log("Category Index:", categoryIndex);
+        console.log("Selected Color:", selectedColor);
+
+        game.currentCategory = game.categories[categoryIndex];
+        questionDisplay();
+        showCategory(); 
+        startTimer(game.timer = 20);
+
+        wheel.style.transition = "none";
+        wheel.style.transform = "rotate(0deg)";
+        spinButton.disabled = false;
+    }, 4000);
+});
+
 
 
 const showCategory = () => {
@@ -280,10 +286,6 @@ const createOptions = () => {
 
     currentQuestion = game.currentCategory.questions[game.currentQuestionIndex];
 
-    console.log("Original Options:", currentQuestion.options);
-    console.log("Original Correct Index:", currentQuestion.correctIndex);
-    console.log("Original Correct Option:", currentQuestion.options[currentQuestion.correctIndex]);
-
     // crea una copia del array de opciones para no modificar la original
     currentOptions = currentQuestion.options.slice();
 
@@ -293,13 +295,10 @@ const createOptions = () => {
     // mezcla las opciones
     shuffle(currentOptions);
 
-    console.log("Shuffled Options:", currentOptions);
 
     // calcula el índice correcto después del shuffle
     newCorrectIndex = currentOptions.indexOf(correctOption);
 
-    console.log("New Correct Index:", newCorrectIndex);
-    console.log("New Correct Option:", currentOptions[newCorrectIndex]);
 
     // renderiza botones con las opciones mezcladas
     for (let i = 0; i < currentOptions.length; i++) {
