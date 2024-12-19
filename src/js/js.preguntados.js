@@ -302,11 +302,13 @@ const drawState = () => {
         const playerScore = document.createElement("p");
         playerScore.style.borderRadius = "30px";
         playerScore.style.padding = "0.6em";
-        playerScore.style.border = "2px solid black";
+        playerScore.style.border = "3px solid black";
         
         playerScore.innerHTML = "Jugador "+[i + 1]+": "+ game.score[i];
         if (i === game.turno - 1) {
-            playerScore.style.backgroundColor = "#FFECC1"; // color de fondo para el jugador en turno
+            playerScore.style.backgroundColor = "#ffecc1"; // color de fondo para el jugador en turno
+            playerScore.style.border = "3px solid #62b273";
+            playerScore.style.color = "#62b273"
         }
         scoreContent.appendChild(playerScore);
     }
