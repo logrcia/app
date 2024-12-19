@@ -27,6 +27,7 @@ const game = {
     score: [0, 0],
     currentCategory: null,
     currentQuestionIndex: 0,
+    currentQuestion: null,
     categories: [
         {
             name: "Geografía",
@@ -183,7 +184,7 @@ const hideModal = () => {
     overlay.style.display = "none";
 };
 
-//TIMER
+
 const startTimer = () => {
     
     timer = setInterval(() => {
@@ -196,12 +197,10 @@ const startTimer = () => {
         }
 
         if (game.timer <= 0) {
-            clearInterval(timer);
-            console.log("¡Tiempo agotado!"); // Mensaje de tiempo agotado
+            clearInterval(timer); //detiene el timer
             showModal(`¡Se agotó el tiempo!`, false, false);
             game.turno = (game.turno % 2) + 1;
             drawState();
-            console.log(game.turno);
         }
     }, 1000);
 };
@@ -209,38 +208,26 @@ const startTimer = () => {
 //RULETA + MUESTRA PREGUNTACONTAINER
 spinButton.addEventListener('click', () => {
     document.getElementById("btn-g3-back").setAttribute("disabled", "disabled");
-    // Disable button during spin
     spinButton.disabled = true;
-    
-    // Completely remove any existing rotation transform
+    //borra cualquier transformación previa en la ruleta
     wheel.style.removeProperty('transform');
-    
-    // Force a reflow to ensure the reset takes effect
+    //fuerza al navegador a recalcular el estilo de la ruleta, sino puede ignorar cambios rapidos en la animación
+    //refuerza que la animación siempre empiece en 0
     void wheel.offsetWidth;
 
-    // crea una rotacion aleatoria, da al menos 5 vueltas
-    const totalRotation = 1800 + Math.random() * 360; 
-    wheel.style.transition = "transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)";
+    const totalRotation = 1800 + Math.random() * 360; // crea una rotacion aleatoria, da al menos 5 vueltas
+    wheel.style.transition = "transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)"; //la animacion dura 4seg
     wheel.style.transform = `rotate(${totalRotation}deg)`;
 
     // cuando termina de girar sale categoría aleatoria
     setTimeout(() => {
         
-        const finalRotation = totalRotation % 360; // calcula el angul final descontando las vueltas completas (el resto de 360)
-        const sectors = game.categories.length; // Número de categorías dinámico
-        const degreesPerSector = 360 / sectors; // Tamaño de cada sector
+        const finalRotation = totalRotation % 360; // calcula el angulo final descontando las vueltas completas (el resto de 360)
+        const sectors = game.categories.length; // sectores de la ruleta que son por la cant de categorias
+        const degreesPerSector = 360 / sectors; // tamaño de cada sector
 
-
+        //identifica el sector donde termina
         const categoryIndex = Math.floor((360 - finalRotation) / degreesPerSector) % sectors;
-
-        const selectedColor = game.categories[categoryIndex].color;
-        
-        // Detailed console logs for debugging
-        console.log("Total Rotation:", totalRotation);
-        console.log("Final Rotation:", finalRotation);
-        console.log("Degrees per Sector:", degreesPerSector);
-        console.log("Category Index:", categoryIndex);
-        console.log("Selected Color:", selectedColor);
 
         game.currentCategory = game.categories[categoryIndex];
         questionDisplay();
@@ -264,43 +251,34 @@ const showCategory = () => {
 }
 
 const showQuestion = () => {
-    
     const pregunta = document.getElementById("pregunta");
-
     //hacer math random para la pregunta
     game.currentQuestionIndex = Math.floor(Math.random() * game.currentCategory.questions.length);
 
     if(preguntaContainer && game.currentCategory){ //verifica que exista el contenedor de preguntas y que currentCategory tenga valor válido
         preguntaContainer.style.display = "flex";
-        const currentQuestion = game.currentCategory.questions[game.currentQuestionIndex].question;
-        pregunta.innerHTML = currentQuestion;
+        game.currentQuestion = game.currentCategory.questions[game.currentQuestionIndex].question;
+        pregunta.innerHTML = game.currentQuestion;
     };
 };
 
-let currentQuestion;
 let newCorrectIndex;
 let currentOptions;
 
 const createOptions = () => {
     options.innerHTML = "";
-
-    currentQuestion = game.currentCategory.questions[game.currentQuestionIndex];
-
+    game.currentQuestion = game.currentCategory.questions[game.currentQuestionIndex];
     // crea una copia del array de opciones para no modificar la original
-    currentOptions = currentQuestion.options.slice();
-
+    currentOptions = game.currentQuestion.options.slice();
     // guarda la opción correcta
-    const correctOption = currentQuestion.options[currentQuestion.correctIndex];
-
+    const correctOption = game.currentQuestion.options[game.currentQuestion.correctIndex];
     // mezcla las opciones
     shuffle(currentOptions);
-
 
     // calcula el índice correcto después del shuffle
     newCorrectIndex = currentOptions.indexOf(correctOption);
 
-
-    // renderiza botones con las opciones mezcladas
+    // crea los botones con las opciones mezcladas
     for (let i = 0; i < currentOptions.length; i++) {
         buttonOption = document.createElement("button");
         buttonOption.innerHTML = currentOptions[i];
@@ -347,7 +325,7 @@ const selectOption = (event) => {
     const selectedOptionIndex = event.target.getAttribute("data-option");
     if (selectedOptionIndex === null) return;
 
-    if (game.round <= 3) {
+    if (game.round <= 15) {
         if (parseInt(selectedOptionIndex) === newCorrectIndex) {
             clearInterval(timer);
             const pointsEarned = Math.max(game.minPoints, Math.ceil((game.timer / 20) * game.maxPoints));
@@ -366,13 +344,13 @@ const selectOption = (event) => {
             showModal(`Incorrecto, la respuesta correcta era: ${currentOptions[newCorrectIndex]}`, false, false);
         }
 
-        if (game.round === 3 && game.turno > game.jugadores) {
-            determinarGanador();
-            return;
-        }
+        
         reloj.innerHTML = 20;
         changePlayer();
         drawState();
+    }else{
+        determinarGanador();
+        return;
     }
 };
 
